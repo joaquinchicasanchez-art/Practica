@@ -1,9 +1,10 @@
 void main() {
     String opcionTeclado = "0", respuestaOpcion = "0",tarifa_ticket;
-    char residenteTeclado, horaSimulada;
-    double dinerosIntroducir;
+    char residenteTeclado = 0, horaSimulada;
+    double dinerosIntroducir = 0;
     boolean ejecutar = true;
-    String tiempo_salida;
+    int dinerosCentimos = 0;
+    String tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "";
 
     do {
 
@@ -59,6 +60,7 @@ void main() {
             IO.println(respuestaOpcion);
             if (opcionTeclado.equals("1")){
                 //Hay que configurar lo de simular la hora, si dices que si, la hora la pones tu, si dices que no te coge la hora con el datatime.
+                nombrePersonaTicket = IO.readln("Introduzca su nombre: ");
                 horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
                 residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
                 residenteTeclado = Character.toUpperCase(residenteTeclado);
@@ -69,32 +71,53 @@ void main() {
                             " 00:15:00   0.25 €\n 00:29:50   0.45 €\n 00:59:31   0.85 €\n 01:29:12   1.25 €\n 02:00:00   1.70 €";
                     default -> "Parametro introducido erroneo";
                 };
+
                 IO.println("Tus tarifas son:\n "+tarifa_ticket);
                 dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
+
                 if (residenteTeclado == 'S'){
 
                     if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
 
-                if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
+                if (dinerosIntroducir < 0.10 && dinerosIntroducir >= 0) IO.println("Dinero Insuficiente");
 
                 if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20)
-                    tiempo_salida = "Has pagado por 15 minutos de estacionamiento";
+                    tiempo_salida = "15 minutos";
 
                 if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40)
-                    tiempo_salida = "Has pagado por 29 minutos y 50 segundos de estacionamiento");
+                    tiempo_salida = "29 minutos y 50 segundos";
 
                 if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60)
-                    tiempo_salida = "Has pagado por 59 minutos y 31 segundos de estacionamiento");
+                    tiempo_salida = "59 minutos y 31 segundos";
 
                 if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80)
-                    tiempo_salida = "Has pagado por 1 hora, 29 minutos y 12 segundos de estacionamiento");
+                    tiempo_salida = "1 hora, 29 minutos y 12 segundos";
 
                 if (dinerosIntroducir >= 0.80)
-                    tiempo_salida = "Has pagado por 2 horas de estacionamiento");
+                    tiempo_salida = "2 horas";
 
+                dinerosCentimos = (int) (dinerosIntroducir * 100)*4;
+                //FIXME: Al castear un numero por ejemplo 1.13, la variable se trunca y se queda con 1.1299999999999
+                String centimosString = String.valueOf(dinerosCentimos);
 
+                codigoTicket = "MAR" + centimosString + nombrePersonaTicket.substring(2) ;
                 if (dinerosIntroducir >= 0.10){
-
+                    IO.println("""
+            +-----------------------------------+
+            |            ZONA AZUL              |
+            |     TICKET DE APARCAMIENTO        |
+            +-----------------------------------+
+            | Código:    %-22s |
+            | Cliente:   %-22s |
+            | Nombre:    %-22s  |
+            | Importe:   %-6.2f €                |
+            | Tiempo:    %-22s |
+            | Hora:      %-22s |
+            +-----------------------------------+
+            |    ¡Gracias por su visita!        |
+            +-----------------------------------+
+            """.formatted(codigoTicket, "Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
+                }
                     }
 
                 }
@@ -104,33 +127,51 @@ void main() {
                     if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
 
                     if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45)
-                        tiempo_salida = "Has pagado por 15 minutos de estacionamiento";
+                        tiempo_salida = "15 minutos";
 
                     if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85)
-                        tiempo_salida = "Has pagado por 29 minutos y 50 segundos de estacionamiento";
+                        tiempo_salida = "29 minutos y 50 segundos";
 
                     if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25)
-                        tiempo_salida = "Has pagado por 59 minutos y 31 segundos de estacionamiento";
+                        tiempo_salida = "59 minutos y 31 segundos";
 
                     if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70)
-                        tiempo_salida = "Has pagado por 1 hora, 29 minutos y 12 segundos de estacionamiento";
+                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
 
                     if (dinerosIntroducir >= 1.70)
-                        tiempo_salida = "Has pagado por 2 horas de estacionamiento";
+                        tiempo_salida = "2 horas";
 
+                    dinerosCentimos = (int) (dinerosIntroducir * 100)*4;
+                    //FIXME: Al castear un numero por ejemplo 1.13, la variable se trunca y se queda con 1.1299999999999
+                    String centimosString = String.valueOf(dinerosCentimos);
+
+                    codigoTicket = "MAR" + centimosString + nombrePersonaTicket.substring(2) ;
                     if (dinerosIntroducir >= 0.25){
-                    IO.println("""
-                            
-                            """);
+                        IO.println("""
+            +-----------------------------------+
+            |            ZONA AZUL              |
+            |     TICKET DE APARCAMIENTO        |
+            +-----------------------------------+
+            | Código:    %-22s |
+            | Cliente:   %-22s |
+            | Nombre:    %-22s  |
+            | Importe:   %-6.2f €                |
+            | Tiempo:    %-22s |
+            +-----------------------------------+
+            |    ¡Gracias por su visita!        |
+            +-----------------------------------+
+            """.formatted(codigoTicket, "No Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
                     }
                 }
 
 
-                //GENERAR TICKET CON CODIGO UNICO
-            }//introducir thread.sleep(milisegundos) ayuda
-        }
 
-    }while (ejecutar);
+            }//TODO: introducir thread.sleep(milisegundos), implementar lo de simular la hora
+        IO.println("\nPresione ENTER para volver a empezar...");
+        IO.readln();
+        }while (ejecutar);
+
+
 
 
 
