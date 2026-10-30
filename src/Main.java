@@ -3,6 +3,7 @@ void main() {
     char residenteTeclado, horaSimulada;
     double dinerosIntroducir;
     boolean ejecutar = true;
+    String tiempo_salida;
 
     do {
 
@@ -73,26 +74,60 @@ void main() {
                 if (residenteTeclado == 'S'){
 
                     if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
-                if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
-                if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20) IO.println("Has pagado por 15 minutos de estacionamiento");
-                if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40) IO.println("Has pagado por 29 minutos y 50 segundos de estacionamiento");
-                if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60) IO.println("Has pagado por 59 minutos y 31 segundos de estacionamiento");
-                if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80) IO.println("Has pagado por 1 hora, 29 minutos y 12 segundos de estacionamiento");
-                if (dinerosIntroducir >= 0.80) IO.println("Has pagado por 2 horas de estacionamiento");
 
+                if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
+
+                if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20)
+                    tiempo_salida = "Has pagado por 15 minutos de estacionamiento";
+
+                if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40)
+                    tiempo_salida = "Has pagado por 29 minutos y 50 segundos de estacionamiento");
+
+                if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60)
+                    tiempo_salida = "Has pagado por 59 minutos y 31 segundos de estacionamiento");
+
+                if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80)
+                    tiempo_salida = "Has pagado por 1 hora, 29 minutos y 12 segundos de estacionamiento");
+
+                if (dinerosIntroducir >= 0.80)
+                    tiempo_salida = "Has pagado por 2 horas de estacionamiento");
+
+
+                if (dinerosIntroducir >= 0.10){
+
+                    }
 
                 }
                 if (residenteTeclado == 'N'){
                     if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
+
                     if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
-                    if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45) IO.println("Has pagado por 15 minutos de estacionamiento");
-                    if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85) IO.println("Has pagado por 29 minutos y 50 segundos de estacionamiento");
-                    if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25) IO.println("Has pagado por 59 minutos y 31 segundos de estacionamiento");
-                    if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70) IO.println("Has pagado por 1 hora, 29 minutos y 12 segundos de estacionamiento");
-                    if (dinerosIntroducir >= 1.70) IO.println("Has pagado por 2 horas de estacionamiento");
+
+                    if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45)
+                        tiempo_salida = "Has pagado por 15 minutos de estacionamiento";
+
+                    if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85)
+                        tiempo_salida = "Has pagado por 29 minutos y 50 segundos de estacionamiento";
+
+                    if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25)
+                        tiempo_salida = "Has pagado por 59 minutos y 31 segundos de estacionamiento";
+
+                    if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70)
+                        tiempo_salida = "Has pagado por 1 hora, 29 minutos y 12 segundos de estacionamiento";
+
+                    if (dinerosIntroducir >= 1.70)
+                        tiempo_salida = "Has pagado por 2 horas de estacionamiento";
+
+                    if (dinerosIntroducir >= 0.25){
+                    IO.println("""
+                            
+                            """);
+                    }
                 }
+
+
                 //GENERAR TICKET CON CODIGO UNICO
-            }
+            }//introducir thread.sleep(milisegundos) ayuda
         }
 
     }while (ejecutar);
