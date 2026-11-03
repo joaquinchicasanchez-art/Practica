@@ -53,7 +53,6 @@ void main() {
 
                 case "4","4.1","4.2" -> "Proceso para entrar en el menu administrador\n" +
                         "-----------------------------------";
-                case "4.3" -> "-1";
                 default -> "Esa opcion no existe\n" +
                         "----------------------------";
             };
@@ -65,10 +64,20 @@ void main() {
                 residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
                 residenteTeclado = Character.toUpperCase(residenteTeclado);
                 tarifa_ticket = switch (residenteTeclado){
-                    case 'S'-> "Duracion\tResidentes:\n" +
-                            " 00:15:00   0.10 €\n 00:29:50   0.20 €\n 00:59:31   0.40 €\n 01:29:12   0.60 €\n 02:00:00   0.80 €";
-                    case 'N'-> "Duracion\tNo residentes:\n" +
-                            " 00:15:00   0.25 €\n 00:29:50   0.45 €\n 00:59:31   0.85 €\n 01:29:12   1.25 €\n 02:00:00   1.70 €";
+                    case 'S'-> """
+                            Duracion\tResidentes:
+                             00:15:00   0.10 €
+                             00:29:50   0.20 €
+                             00:59:31   0.40 €
+                             01:29:12   0.60 €
+                             02:00:00   0.80 €""";
+                    case 'N'-> """
+                            Duracion\tNo residentes:
+                             00:15:00   0.25 €
+                             00:29:50   0.45 €
+                             00:59:31   0.85 €
+                             01:29:12   1.25 €
+                             02:00:00   1.70 €""";
                     default -> "Parametro introducido erroneo";
                 };
 
@@ -116,7 +125,7 @@ void main() {
             +-----------------------------------+
             |    ¡Gracias por su visita!        |
             +-----------------------------------+
-            """.formatted(codigoTicket, "Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
+            """.formatted(codigoTicket, "Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida, tiempo_salida));
                 }
                     }
 
