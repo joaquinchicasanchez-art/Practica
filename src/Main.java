@@ -118,14 +118,15 @@ void main() {
             +-----------------------------------+
             | Código:    %-22s |
             | Cliente:   %-22s |
-            | Nombre:    %-22s  |
+            | Nombre:    %-22s |
             | Importe:   %-6.2f €                |
             | Tiempo:    %-22s |
-            | Hora:      %-22s |
+            | Fecha:      %-22s |
+            | Fecha límite: %-22s |
             +-----------------------------------+
             |    ¡Gracias por su visita!        |
             +-----------------------------------+
-            """.formatted(codigoTicket, "Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida, tiempo_salida));
+            """.formatted(codigoTicket, "Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
                 }
                     }
 
