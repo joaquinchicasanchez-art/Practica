@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 void main() {
     String opcionTeclado = "0", respuestaOpcion = "0",tarifa_ticket;
     char residenteTeclado = 0, horaSimulada;
@@ -7,7 +9,6 @@ void main() {
     String tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "";
 
     do {
-
         IO.println("""
             
             [ ZONA AZUL - MARTOS ]
@@ -111,6 +112,7 @@ void main() {
 
                 codigoTicket = "MAR" + centimosString + nombrePersonaTicket.substring(2) ;
                 if (dinerosIntroducir >= 0.10){
+
                     IO.println("""
             +-----------------------------------+
             |            ZONA AZUL              |
@@ -173,18 +175,11 @@ void main() {
             """.formatted(codigoTicket, "No Residente",nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
                     }
                 }
-
-
-
-            }//TODO: introducir thread.sleep(milisegundos), implementar lo de simular la hora
+            }
+        //TODO: introducir thread.sleep(milisegundos), implementar lo de simular la hora
         if (ejecutar == true) {
             IO.println("\nPresione ENTER para volver a empezar...");
             IO.readln();
         }
         }while (ejecutar);
-
-
-
-
-
 }
