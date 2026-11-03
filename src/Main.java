@@ -167,8 +167,10 @@ void main() {
 
 
             }//TODO: introducir thread.sleep(milisegundos), implementar lo de simular la hora
-        IO.println("\nPresione ENTER para volver a empezar...");
-        IO.readln();
+        if (ejecutar == true) {
+            IO.println("\nPresione ENTER para volver a empezar...");
+            IO.readln();
+        }
         }while (ejecutar);
 
 
