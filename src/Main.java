@@ -112,7 +112,6 @@ void main() {
 
                 codigoTicket = "MAR" + centimosString + nombrePersonaTicket.substring(2) ;
                 if (dinerosIntroducir >= 0.10){
-
                     IO.println("""
             +-----------------------------------+
             |            ZONA AZUL              |
