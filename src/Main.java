@@ -1,11 +1,14 @@
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 void main() throws InterruptedException {
-    String opcionTeclado = "0", respuestaOpcion = "0", tarifa_ticket, codigoRevertido;
+    String opcionTeclado = "0";
+    String respuestaOpcion = "0";
+    String tarifa_ticket;
+    int codigoRevertido;
     char residenteTeclado = 0, horaSimulada;
-    double dinerosIntroducir = 0;
+    double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0;
     boolean ejecutar = true;
-    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo = 5;
+    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0;
     String tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "", codigoTeclado = "";
 
     do {
@@ -173,22 +176,71 @@ void main() throws InterruptedException {
 
 
                 case "2", "2.1", "2.2" -> {
+                    intentosIntroducirCodigo = 5;
                     IO.println("Proceso para anular una multa\n" +
                             "-------------------------------");
                     if (codigoTicket.equals(""))IO.println("No hay ninguna multa introducida");
                     else {
                         do {
                             codigoTeclado = IO.readln("Introduce tu codigo de tu ticket (%d/5): ".formatted(intentosIntroducirCodigo));
-                            if (codigoTeclado.equals(codigoTicket)) {
+                            intentosIntroducirCodigo --;
+
+                            if (!codigoTeclado.equals(codigoTicket)) {
                                 IO.println("Codigo introducido incorrecto o no existe");
-                                IO.readln("Presiona enter para volver a intentar: ");
-                                intentosIntroducirCodigo --;
 
                             }
-                        }while (codigoTeclado.equals(codigoTicket) || intentosIntroducirCodigo == 0);
+                        }while (!codigoTeclado.equals(codigoTicket) && intentosIntroducirCodigo > 0);
 
-                            IO.println("Hola %s , codigo introducido correcto".formatted(nombrePersonaTicket));
+                        if (intentosIntroducirCodigo == 0) {
+                            IO.println("Te has quedado sin intentos");
+                        }else {
 
+                            codigoRevertido = Integer.parseInt(codigoTeclado.substring(3));
+                            if (codigoRevertido % 7 == 0){
+                                IO.println("Hola %s , codigo introducido correcto".formatted(nombrePersonaTicket));
+                                IO.println("""
+                                
+                                Causas para una multa
+                                \t1 Por exceder el tiempo permitido (3€)
+                                \t2 Por carecer de ticket (6€)
+                                """);
+                                int respuestaMenu2 = Integer.parseInt(IO.readln("Introduce numero (1-2): "));
+
+                                if (respuestaMenu2 == 1){
+                                    do {
+                                        IO.println("""
+                                                
+                                                Anotaciones: 
+                                                
+                                                \tEl dinero se puede meter en varios intentos
+                                                \tLa maquina no da cambio""");
+                                        cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 3€ para anular la multa: "));
+                                    }while (cantidadAbonadaAnulo < 3.00);
+                                    //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
+
+                                    dineroAcumulativoMultas += cantidadAbonadaAnulo;
+                                    numMultas += 1;
+
+                                }
+                                if (respuestaMenu2 == 2){
+                                    do {
+                                        IO.println("""
+                                                
+                                                Anotaciones: 
+                                                
+                                                \tEl dinero se puede meter en varios intentos
+                                                \tLa maquina no da cambio""");
+                                        cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 6€ para anular la multa: "));
+                                    }while (cantidadAbonadaAnulo < 3.00);
+                                    //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
+
+                                    dineroAcumulativoMultas += cantidadAbonadaAnulo;
+                                    numMultas += 1;
+                                }
+                            }else {
+                                IO.println("Codigo invalido");
+                            }
+                        }
 
                     }
 
