@@ -19,16 +19,26 @@ void main() throws InterruptedException {
                 gasto2 = Integer.parseInt(IO.readln("Introduce cuanto se ha gastado el segundo: "));
 
                 gasto3 = Integer.parseInt(IO.readln("Introduce cuanto se ha gastado el tercero (Introduce -1 si no existe): "));
-                if (gasto3 != -1) contador++;
-                else gasto3 = 0;
 
-                gasto4 = Integer.parseInt(IO.readln("Introduce cuanto se ha gastado el cuarto (Introduce -1 si no existe): "));
-                if (gasto4 != -1) contador++;
-                else gasto4 = 0;
+                if (gasto3 == -1) {
+                    gasto3 = 0;
+                } else {
+                    contador++;
+                    gasto4 = Integer.parseInt(IO.readln("Introduce cuanto se ha gastado el cuarto (Introduce -1 si no existe): "));
 
-                gasto5 = Integer.parseInt(IO.readln("Introduce cuanto se ha gastado el quinto (Introduce -1 si no existe): "));
-                if (gasto5 != -1) contador++;
-                else gasto5 = 0;
+                    if (gasto4 == -1) {
+                        gasto4 = 0;
+                    } else {
+                        contador++;
+                        gasto5 = Integer.parseInt(IO.readln("Introduce cuanto se ha gastado el quinto (Introduce -1 si no existe): "));
+                        if (gasto5 == -1) gasto5 = 0;
+                        else contador++;
+                    }
+                }
+
+
+
+
             }
             case 2 -> {
                 if (gasto1 == 0 || gasto2 == 0) {
