@@ -217,13 +217,16 @@ void main() throws InterruptedException {
                                         cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 3€ para anular la multa: "));
                                     }while (cantidadAbonadaAnulo < 3.00);
                                     //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
-
+                                    IO.println("Multa pagada");
+                                    codigoTicket = "";
+                                    cantidadAbonadaAnulo = 0;
                                     dineroAcumulativoMultas += cantidadAbonadaAnulo;
                                     numMultas += 1;
 
                                 }
                                 if (respuestaMenu2 == 2){
                                     do {
+                                        IO.println(cantidadAbonadaAnulo);
                                         IO.println("""
                                                 
                                                 Anotaciones: 
@@ -231,9 +234,13 @@ void main() throws InterruptedException {
                                                 \tEl dinero se puede meter en varios intentos
                                                 \tLa maquina no da cambio""");
                                         cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 6€ para anular la multa: "));
-                                    }while (cantidadAbonadaAnulo < 3.00);
+                                    }while (cantidadAbonadaAnulo < 6.00);
                                     //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
-
+                                    IO.println("Multa pagada");
+                                    codigoTicket = "";
+                                    //TODO: LE DAMOS ESTE VALOR AL TICKET PARA QUE SE BORRE DE LA VARIABLE
+                                    cantidadAbonadaAnulo = 0;
+                                    //TODO: CANTIDADABONADA A 0 PARA QUE NO SE GUARDE EL DINERO
                                     dineroAcumulativoMultas += cantidadAbonadaAnulo;
                                     numMultas += 1;
                                 }
@@ -261,7 +268,6 @@ void main() throws InterruptedException {
             }
 
 
-            //TODO: introducir thread.sleep(milisegundos), implementar lo de simular la hora
             if (ejecutar == true) {
                 IO.println("\nPresione ENTER para volver a empezar...");
                 IO.readln();
