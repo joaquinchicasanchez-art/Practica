@@ -25,7 +25,7 @@ void main() throws InterruptedException {
                 
                 """);
 
-        //Menu (Quiza quitarle los 2.1,2.2,4.1,etc)//
+
         IO.println("""
                 \n1. Obtener un ticket
                 2. Anular una multa
@@ -203,17 +203,19 @@ void main() throws InterruptedException {
                                 Causas para una multa
                                 \t1 Por exceder el tiempo permitido (3€)
                                 \t2 Por carecer de ticket (6€)
+                                
                                 """);
                                 int respuestaMenu2 = Integer.parseInt(IO.readln("Introduce numero (1-2): "));
 
                                 if (respuestaMenu2 == 1){
                                     do {
                                         IO.println("""
-                                                
+                                              
                                                 Anotaciones: 
                                                 
                                                 \tEl dinero se puede meter en varios intentos
-                                                \tLa maquina no da cambio""");
+                                                \tLa maquina no da cambio
+                                                """);
                                         cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 3€ para anular la multa: "));
                                     }while (cantidadAbonadaAnulo < 3.00);
                                     //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
@@ -232,7 +234,8 @@ void main() throws InterruptedException {
                                                 Anotaciones: 
                                                 
                                                 \tEl dinero se puede meter en varios intentos
-                                                \tLa maquina no da cambio""");
+                                                \tLa maquina no da cambio
+                                                """);
                                         cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 6€ para anular la multa: "));
                                     }while (cantidadAbonadaAnulo < 6.00);
                                     //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
