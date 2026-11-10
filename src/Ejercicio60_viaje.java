@@ -4,6 +4,9 @@ void main() throws InterruptedException {
     int contador = 2;
     boolean puntero = true;
     String pagarDeber;
+
+
+
     do {
         IO.println("""
                 1. Introducir los gastos de los viajeros
@@ -51,7 +54,7 @@ void main() throws InterruptedException {
                 }
             }
             case 3 -> {
-                if (gasto1 == 0 || gasto2 == 0) IO.println("N has introducido los datos suficientes");
+                if (gasto1 == 0 || gasto2 == 0) IO.println("No has introducido los datos suficientes");
                 else {
                     if (paga1 >= 0) pagarDeber = "pagar";
                     else {
