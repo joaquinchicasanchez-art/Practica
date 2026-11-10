@@ -1,15 +1,12 @@
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
 void main() throws InterruptedException {
-    String opcionTeclado = "0";
-    String respuestaOpcion = "0";
-    String tarifa_ticket;
-    int codigoRevertido;
+    String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "",tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "", codigoTeclado = "";
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0;
     boolean ejecutar = true;
-    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0;
-    String tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "", codigoTeclado = "";
+    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0, codigoRevertido;
 
     do {
         IO.println("""
@@ -26,256 +23,252 @@ void main() throws InterruptedException {
                 """);
 
 
-
         IO.println("""
-                \n1. Obtener un ticket
+                1. Obtener un ticket
                 2. Anular una multa
-                \t2.1 Por exceder el tiempo permitido
-                \t2.2 Por carecer de ticket
                 3. Consultar fecha y hora actual, tarifas y horarios
                 4. Menu de administrador
-                \t4.1 Dinero ingresado en tickets y tickets generados
-                \t4.2 Dinero ingresado por multas y multas anuladas
-                \t4.3 Apagar el software
                 """);
-
+        // Introducimos el menu y pedimos un numero para seleccionarlo
         opcionTeclado = IO.readln("Introduce un numero del 1 al 4: ");
 
-        //Con esto si pongo 4.3 me salgo del menu
 
-        if (opcionTeclado.equals("4.3")) {
-            ejecutar = false;
-            IO.println("Has salido del sistema correctamente");
+        switch (opcionTeclado) {
+            case "1" -> {
+                IO.println("Proceso para obtener un ticket\n" +
+                        "-------------------------------");
 
-        } else {
-            switch (opcionTeclado) {
-                case "1" -> {
-                    IO.println("Proceso para obtener un ticket\n" +
-                            "-------------------------------");
-                    Thread.sleep(1000);
-                    for (int i = 0; i < 45; i++) {
-                        IO.println();
-                    }
-                    //Hay que configurar lo de simular la hora, si dices que si, la hora la pones tu, si dices que no te coge la hora con el datatime.
-                    nombrePersonaTicket = IO.readln("Introduzca su nombre: ");
-                    horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
-                    residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
-                    residenteTeclado = Character.toUpperCase(residenteTeclado);
-                    tarifa_ticket = switch (residenteTeclado) {
-                        case 'S' -> """
-                                Duracion\tResidentes:
-                                 00:15:00   0.10 €
-                                 00:29:50   0.20 €
-                                 00:59:31   0.40 €
-                                 01:29:12   0.60 €
-                                 02:00:00   0.80 €""";
-                        case 'N' -> """
-                                Duracion\tNo residentes:
-                                 00:15:00   0.25 €
-                                 00:29:50   0.45 €
-                                 00:59:31   0.85 €
-                                 01:29:12   1.25 €
-                                 02:00:00   1.70 €""";
-                        default -> "Parametro introducido erroneo";
-                    };
 
-                    IO.println("Tus tarifas son:\n " + tarifa_ticket);
-                    dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
+                Thread.sleep(1000);
+                for (int i = 0; i < 45; i++) {
+                    IO.println();
+                }
 
-                    if (residenteTeclado == 'S') {
+                //todo Hay que configurar lo de simular la hora, si dices que si, la hora la pones tu, si dices que no te coge la hora con el datatime.
 
-                        if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
+                nombrePersonaTicket = IO.readln("Introduzca su nombre: ");
+                horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
+                residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
+                residenteTeclado = Character.toUpperCase(residenteTeclado);
 
-                        if (dinerosIntroducir < 0.10 && dinerosIntroducir >= 0) IO.println("Dinero Insuficiente");
 
-                        if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20)
-                            tiempo_salida = "15 minutos";
+                tarifa_ticket = switch (residenteTeclado) {
+                    case 'S' -> """
+                            Duracion\tResidentes:
+                             00:15:00   0.10 €
+                             00:29:50   0.20 €
+                             00:59:31   0.40 €
+                             01:29:12   0.60 €
+                             02:00:00   0.80 €""";
+                    case 'N' -> """
+                            Duracion\tNo residentes:
+                             00:15:00   0.25 €
+                             00:29:50   0.45 €
+                             00:59:31   0.85 €
+                             01:29:12   1.25 €
+                             02:00:00   1.70 €""";
+                    default -> "Parametro introducido erroneo";
+                };
 
-                        if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40)
-                            tiempo_salida = "29 minutos y 50 segundos";
+                IO.println("Tus tarifas son:\n " + tarifa_ticket);
+                dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
 
-                        if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60)
-                            tiempo_salida = "59 minutos y 31 segundos";
+                if (residenteTeclado == 'S') {
 
-                        if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80)
-                            tiempo_salida = "1 hora, 29 minutos y 12 segundos";
+                    if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
 
-                        if (dinerosIntroducir >= 0.80)
-                            tiempo_salida = "2 horas";
+                    if (dinerosIntroducir < 0.10 && dinerosIntroducir >= 0) IO.println("Dinero Insuficiente");
 
-                        dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);;
+                    if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20)
+                        tiempo_salida = "15 minutos";
 
-                        codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
-                        //TODO: para deshacer el codigo es substring (3) y / 7
+                    if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40)
+                        tiempo_salida = "29 minutos y 50 segundos";
 
-                        if (dinerosIntroducir >= 0.10) {
-                            contadorTicket ++;
-                            IO.println("""
-                                    +-----------------------------------+
-                                    |            ZONA AZUL              |
-                                    |     TICKET DE APARCAMIENTO        |
-                                    +-----------------------------------+
-                                    | Código:    %-22s |
-                                    | Cliente:   %-22s |
-                                    | Nombre:    %-22s |
-                                    | Importe:   %-6.2f €                |
-                                    | Tiempo:    %-22s |
-                                    | Fecha:      %-22s |
-                                    | Fecha límite: %-22s |
-                                    +-----------------------------------+
-                                    |    ¡Gracias por su visita!        |
-                                    +-----------------------------------+
-                                    """.formatted(codigoTicket, "Residente", nombrePersonaTicket, dinerosIntroducir, tiempo_salida, "sin hacer", "sin hacer"));
-                        }
-                    }
+                    if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60)
+                        tiempo_salida = "59 minutos y 31 segundos";
 
-                    if (residenteTeclado == 'N') {
-                        if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
+                    if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80)
+                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
 
-                        if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
+                    if (dinerosIntroducir >= 0.80)
+                        tiempo_salida = "2 horas";
 
-                        if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45)
-                            tiempo_salida = "15 minutos";
+                    dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
+                    ;
 
-                        if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85)
-                            tiempo_salida = "29 minutos y 50 segundos";
+                    codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
+                    //TODO: para deshacer el codigo es substring (3) y / 7
 
-                        if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25)
-                            tiempo_salida = "59 minutos y 31 segundos";
-
-                        if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70)
-                            tiempo_salida = "1 hora, 29 minutos y 12 segundos";
-
-                        if (dinerosIntroducir >= 1.70)
-                            tiempo_salida = "2 horas";
-
-                        dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
-                        //FIXME: ARREGLADO LO DE LOS CENTIMOS CON MATH.ROUND
-
-                        codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
-                        //TODO: para deshacer el codigo es substring (3) y / 7
-
-                        if (dinerosIntroducir >= 0.25) {
-                            contadorTicket ++;
-                            IO.println("""
-                                    +-----------------------------------+
-                                    |            ZONA AZUL              |
-                                    |     TICKET DE APARCAMIENTO        |
-                                    +-----------------------------------+
-                                    | Código:    %-22s |
-                                    | Cliente:   %-22s |
-                                    | Nombre:    %-22s  |
-                                    | Importe:   %-6.2f €                |
-                                    | Tiempo:    %-22s |
-                                    +-----------------------------------+
-                                    |    ¡Gracias por su visita!        |
-                                    +-----------------------------------+
-                                    """.formatted(codigoTicket, "No Residente", nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
-                        }
+                    if (dinerosIntroducir >= 0.10) {
+                        contadorTicket++;
+                        IO.println("""
+                                +-----------------------------------+
+                                |            ZONA AZUL              |
+                                |     TICKET DE APARCAMIENTO        |
+                                +-----------------------------------+
+                                | Código:    %-22s |
+                                | Cliente:   %-22s |
+                                | Nombre:    %-22s |
+                                | Importe:   %-6.2f €                |
+                                | Tiempo:    %-22s |
+                                | Fecha:      %-22s |
+                                | Fecha límite: %-22s |
+                                +-----------------------------------+
+                                |    ¡Gracias por su visita!        |
+                                +-----------------------------------+
+                                """.formatted(codigoTicket, "Residente", nombrePersonaTicket, dinerosIntroducir, tiempo_salida, "sin hacer", "sin hacer"));
                     }
                 }
 
+                if (residenteTeclado == 'N') {
 
-                case "2", "2.1", "2.2" -> {
-                    intentosIntroducirCodigo = 5;
-                    IO.println("Proceso para anular una multa\n" +
-                            "-------------------------------");
-                    if (codigoTicket.equals(""))IO.println("No hay ninguna multa introducida");
-                    else {
-                        do {
-                            codigoTeclado = IO.readln("Introduce tu codigo de tu ticket (%d/5): ".formatted(intentosIntroducirCodigo));
-                            intentosIntroducirCodigo --;
+                    if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
 
-                            if (!codigoTeclado.equals(codigoTicket)) {
-                                IO.println("Codigo introducido incorrecto o no existe");
+                    if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
 
-                            }
-                        }while (!codigoTeclado.equals(codigoTicket) && intentosIntroducirCodigo > 0);
+                    if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45)
+                        tiempo_salida = "15 minutos";
 
-                        if (intentosIntroducirCodigo == 0) {
-                            IO.println("Te has quedado sin intentos");
-                        }else {
+                    if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85)
+                        tiempo_salida = "29 minutos y 50 segundos";
 
-                            codigoRevertido = Integer.parseInt(codigoTeclado.substring(3));
-                            if (codigoRevertido % 7 == 0){
-                                IO.println("Hola %s , codigo introducido correcto".formatted(nombrePersonaTicket));
-                                IO.println("""
-                                
-                                Causas para una multa
-                                \t1 Por exceder el tiempo permitido (3€)
-                                \t2 Por carecer de ticket (6€)
-                                
-                                """);
-                                int respuestaMenu2 = Integer.parseInt(IO.readln("Introduce numero (1-2): "));
+                    if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25)
+                        tiempo_salida = "59 minutos y 31 segundos";
 
-                                if (respuestaMenu2 == 1){
-                                    do {
-                                        IO.println("""
-                                              
-                                                Anotaciones: 
-                                                
-                                                \tEl dinero se puede meter en varios intentos
-                                                \tLa maquina no da cambio
-                                                """);
-                                        cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 3€ para anular la multa: "));
-                                    }while (cantidadAbonadaAnulo < 3.00);
-                                    //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
-                                    IO.println("Multa pagada");
-                                    codigoTicket = "";
-                                    cantidadAbonadaAnulo = 0;
-                                    dineroAcumulativoMultas += cantidadAbonadaAnulo;
-                                    numMultas += 1;
+                    if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70)
+                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
 
-                                }
-                                if (respuestaMenu2 == 2){
-                                    do {
-                                        IO.println(cantidadAbonadaAnulo);
-                                        IO.println("""
-                                                
-                                                Anotaciones: 
-                                                
-                                                \tEl dinero se puede meter en varios intentos
-                                                \tLa maquina no da cambio
-                                                """);
-                                        cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 6€ para anular la multa: "));
-                                    }while (cantidadAbonadaAnulo < 6.00);
-                                    //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
-                                    IO.println("Multa pagada");
-                                    codigoTicket = "";
-                                    //TODO: LE DAMOS ESTE VALOR AL TICKET PARA QUE SE BORRE DE LA VARIABLE
-                                    cantidadAbonadaAnulo = 0;
-                                    //TODO: CANTIDADABONADA A 0 PARA QUE NO SE GUARDE EL DINERO
-                                    dineroAcumulativoMultas += cantidadAbonadaAnulo;
-                                    numMultas += 1;
-                                }
-                            }else {
-                                IO.println("Codigo invalido");
-                            }
-                        }
+                    if (dinerosIntroducir >= 1.70)
+                        tiempo_salida = "2 horas";
 
+                    dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
+                    //FIXME: ARREGLADO LO DE LOS CENTIMOS CON MATH.ROUND
+
+                    codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
+                    //TODO: para deshacer el codigo es substring (3) y / 7
+
+                    if (dinerosIntroducir >= 0.25) {
+                        contadorTicket++;
+                        IO.println("""
+                                +-----------------------------------+
+                                |            ZONA AZUL              |
+                                |     TICKET DE APARCAMIENTO        |
+                                +-----------------------------------+
+                                | Código:    %-22s |
+                                | Cliente:   %-22s |
+                                | Nombre:    %-22s  |
+                                | Importe:   %-6.2f €                |
+                                | Tiempo:    %-22s |
+                                +-----------------------------------+
+                                |    ¡Gracias por su visita!        |
+                                +-----------------------------------+
+                                """.formatted(codigoTicket, "No Residente", nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
                     }
-
-                }
-                case "3" -> {
-                    IO.println("Consultorio de fecha y hora actual, tarifas y horarios\n" +
-                            "----------------------------------------------------------");
-                }
-
-                case "4", "4.1", "4.2" -> {
-                    IO.println("Proceso para entrar en el menu administrador\n" +
-                            "-----------------------------------");
-                }
-                default -> {
-                    IO.println("Esa opcion no existe\n" +
-                            "----------------------------");
                 }
             }
 
 
-            if (ejecutar == true) {
-                IO.println("\nPresione ENTER para volver a empezar...");
-                IO.readln();
+            case "2", "2.1", "2.2" -> {
+                intentosIntroducirCodigo = 5;
+                IO.println("Proceso para anular una multa\n" +
+                        "-------------------------------");
+                if (codigoTicket.equals("")) IO.println("No hay ninguna multa introducida");
+                else {
+                    do {
+                        codigoTeclado = IO.readln("Introduce tu codigo de tu ticket (%d/5): ".formatted(intentosIntroducirCodigo));
+                        intentosIntroducirCodigo--;
+
+                        if (!codigoTeclado.equals(codigoTicket)) {
+                            IO.println("Codigo introducido incorrecto o no existe");
+
+                        }
+                    } while (!codigoTeclado.equals(codigoTicket) && intentosIntroducirCodigo > 0);
+
+                    if (intentosIntroducirCodigo == 0) {
+                        IO.println("Te has quedado sin intentos");
+                    } else {
+
+                        codigoRevertido = Integer.parseInt(codigoTeclado.substring(3));
+                        if (codigoRevertido % 7 == 0) {
+                            IO.println("Hola %s , codigo introducido correcto".formatted(nombrePersonaTicket));
+                            IO.println("""
+                                    
+                                    Causas para una multa
+                                    \t1 Por exceder el tiempo permitido (3€)
+                                    \t2 Por carecer de ticket (6€)
+                                    
+                                    """);
+                            int respuestaMenu2 = Integer.parseInt(IO.readln("Introduce numero (1-2): "));
+
+                            if (respuestaMenu2 == 1) {
+                                do {
+                                    IO.println("""
+                                            
+                                            Anotaciones: 
+                                            
+                                            \tEl dinero se puede meter en varios intentos
+                                            \tLa maquina no da cambio
+                                            """);
+                                    cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 3€ para anular la multa: "));
+                                } while (cantidadAbonadaAnulo < 3.00);
+                                //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
+                                IO.println("Multa pagada");
+                                codigoTicket = "";
+                                cantidadAbonadaAnulo = 0;
+                                dineroAcumulativoMultas += cantidadAbonadaAnulo;
+                                numMultas += 1;
+
+                            }
+                            if (respuestaMenu2 == 2) {
+                                do {
+                                    IO.println(cantidadAbonadaAnulo);
+                                    IO.println("""
+                                            
+                                            Anotaciones: 
+                                            
+                                            \tEl dinero se puede meter en varios intentos
+                                            \tLa maquina no da cambio
+                                            """);
+                                    cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce 6€ para anular la multa: "));
+                                } while (cantidadAbonadaAnulo < 6.00);
+                                //TODO: ESTAS DOS LINEAS ESTAN PENSADAS PARA EL PUNTO 4, QUE HAY QUE CALCULAR EL TOTAL RECAUDADO Y NUMERO DE MULTAS
+                                IO.println("Multa pagada");
+                                codigoTicket = "";
+                                //TODO: LE DAMOS ESTE VALOR AL TICKET PARA QUE SE BORRE DE LA VARIABLE
+                                cantidadAbonadaAnulo = 0;
+                                //TODO: CANTIDADABONADA A 0 PARA QUE NO SE GUARDE EL DINERO
+                                dineroAcumulativoMultas += cantidadAbonadaAnulo;
+                                numMultas += 1;
+                            }
+                        } else {
+                            IO.println("Codigo invalido");
+                        }
+                    }
+
+                }
+
+            }
+            case "3" -> {
+                IO.println("Consultorio de fecha y hora actual, tarifas y horarios\n" +
+                        "----------------------------------------------------------");
+            }
+
+            case "4", "4.1", "4.2" -> {
+                IO.println("Proceso para entrar en el menu administrador\n" +
+                        "-----------------------------------");
+            }
+            default -> {
+                IO.println("Esa opcion no existe\n" +
+                        "----------------------------");
             }
         }
+
+
+        if (ejecutar == true) {
+            IO.println("\nPresione ENTER para volver a empezar...");
+            IO.readln();
+        }
+
     } while (ejecutar);
 }
