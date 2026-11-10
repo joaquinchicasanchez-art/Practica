@@ -26,6 +26,7 @@ void main() throws InterruptedException {
                 """);
 
 
+
         IO.println("""
                 \n1. Obtener un ticket
                 2. Anular una multa
