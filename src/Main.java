@@ -2,13 +2,16 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 void main() throws InterruptedException {
-    String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "", codigoTeclado = "";
+    String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
+            nombrePersonaTicket = "", codigoTeclado = "";
     char residenteTeclado = 0, horaSimulada;
-    double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0;
-    boolean ejecutar = true;
-    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0, codigoRevertido;
+    double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
+    boolean ejecutar = true, dineroSuficiente = true;
+    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
+            horasAniadir, minutosAniadir, segundosAniadir;
 
     do {
+
         IO.println("""
                 
                 [ ZONA AZUL - MARTOS ]
@@ -46,12 +49,16 @@ void main() throws InterruptedException {
 
                 //todo Hay que configurar lo de simular la hora, si dices que si, la hora la pones tu, si dices que no te coge la hora con el datatime.
 
+                // Preguntamos el nombre, si quiere simular la hora y si es residente
                 nombrePersonaTicket = IO.readln("Introduzca su nombre: ");
                 horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
                 residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
+
+                //Nos aseguramos que la letra este en mayuscula para que el switch no de problemas
                 residenteTeclado = Character.toUpperCase(residenteTeclado);
                 horaSimulada = Character.toUpperCase(horaSimulada);
 
+                //Imprimimos los precios dependiendo si es residente o no
 
                 tarifa_ticket = switch (residenteTeclado) {
                     case 'S' -> """
@@ -76,24 +83,48 @@ void main() throws InterruptedException {
 
                 if (residenteTeclado == 'S') {
 
-                    if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
+                    if (dinerosIntroducir < 0) {
+                        IO.println("Cantidad negativa");
+                        dineroSuficiente = false;
+                    }
 
-                    if (dinerosIntroducir < 0.10 && dinerosIntroducir >= 0) IO.println("Dinero Insuficiente");
+                    if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) {
+                        IO.println("Dinero Insuficiente");
+                        dineroSuficiente = false;
+                    }
+                    if (dinerosIntroducir >= 0.10) dineroSuficiente = true;
 
-                    if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20)
+                    if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20) {
                         tiempo_salida = "15 minutos";
-
-                    if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40)
+                        horasAniadir = 0;
+                        minutosAniadir = 15;
+                        segundosAniadir = 0;
+                    }
+                    if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40) {
                         tiempo_salida = "29 minutos y 50 segundos";
-
-                    if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60)
+                        horasAniadir = 0;
+                        minutosAniadir = 29;
+                        segundosAniadir = 50;
+                    }
+                    if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60) {
                         tiempo_salida = "59 minutos y 31 segundos";
-
-                    if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80)
+                        horasAniadir = 0;
+                        minutosAniadir = 59;
+                        segundosAniadir = 31;
+                    }
+                    if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80) {
                         tiempo_salida = "1 hora, 29 minutos y 12 segundos";
+                        horasAniadir = 1;
+                        minutosAniadir = 29;
+                        segundosAniadir = 12;
+                    }
 
-                    if (dinerosIntroducir >= 0.80)
+                    if (dinerosIntroducir >= 0.80) {
                         tiempo_salida = "2 horas";
+                        horasAniadir = 2;
+                        minutosAniadir = 0;
+                        segundosAniadir = 0;
+                    }
 
                     dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
                     ;
@@ -101,9 +132,64 @@ void main() throws InterruptedException {
                     codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
                     //TODO: para deshacer el codigo es substring (3) y / 7
 
-                    if (dinerosIntroducir >= 0.10) {
-                        contadorTicket++;
-                        IO.println("""
+
+                }
+
+                if (residenteTeclado == 'N') {
+
+                    if (dinerosIntroducir < 0) {
+                        IO.println("Cantidad negativa");
+                        dineroSuficiente = false;
+                    }
+
+                    if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) {
+                        IO.println("Dinero Insuficiente");
+                        dineroSuficiente = false;
+                    }
+                    if (dinerosIntroducir >= 0.25) dineroSuficiente = true;
+
+                    if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45) {
+                        tiempo_salida = "15 minutos";
+                        horasAniadir = 0;
+                        minutosAniadir = 15;
+                        segundosAniadir = 0;
+                    }
+                    if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85) {
+                        tiempo_salida = "29 minutos y 50 segundos";
+                        horasAniadir = 0;
+                        minutosAniadir = 29;
+                        segundosAniadir = 50;
+                    }
+                    if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25) {
+                        tiempo_salida = "59 minutos y 31 segundos";
+                        horasAniadir = 0;
+                        minutosAniadir = 59;
+                        segundosAniadir = 31;
+                    }
+                    if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70) {
+                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
+                        horasAniadir = 1;
+                        minutosAniadir = 29;
+                        segundosAniadir = 12;
+                    }
+
+                    if (dinerosIntroducir >= 1.70) {
+                        tiempo_salida = "2 horas";
+                        horasAniadir = 2;
+                        minutosAniadir = 0;
+                        segundosAniadir = 0;
+                    }
+
+                    dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
+
+                    codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
+                    //TODO: para deshacer el codigo es substring (3) y / 7
+
+                }
+                if (dineroSuficiente) {
+                    contadorTicket++;
+                    dineroAcumuladoTicket += dinerosIntroducir;
+                    IO.println("""
                                 +-----------------------------------+
                                 |            ZONA AZUL              |
                                 |     TICKET DE APARCAMIENTO        |
@@ -119,59 +205,19 @@ void main() throws InterruptedException {
                                 |    ¡Gracias por su visita!        |
                                 +-----------------------------------+
                                 """.formatted(codigoTicket, "Residente", nombrePersonaTicket, dinerosIntroducir,
-                                tiempo_salida, "sin hacer", "sin hacer"));
-                    }
-                }
-
-                if (residenteTeclado == 'N') {
-
-                    if (dinerosIntroducir < 0) IO.println("Cantidad negativa");
-
-                    if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) IO.println("Dinero Insuficiente");
-
-                    if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45)
-                        tiempo_salida = "15 minutos";
-
-                    if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85)
-                        tiempo_salida = "29 minutos y 50 segundos";
-
-                    if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25)
-                        tiempo_salida = "59 minutos y 31 segundos";
-
-                    if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70)
-                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
-
-                    if (dinerosIntroducir >= 1.70)
-                        tiempo_salida = "2 horas";
-
-                    dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
-                    //FIXME: ARREGLADO LO DE LOS CENTIMOS CON MATH.ROUND
-
-                    codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
-                    //TODO: para deshacer el codigo es substring (3) y / 7
-
-                    if (dinerosIntroducir >= 0.25) {
-                        contadorTicket++;
-                        IO.println("""
-                                +-----------------------------------+
-                                |            ZONA AZUL              |
-                                |     TICKET DE APARCAMIENTO        |
-                                +-----------------------------------+
-                                | Código:    %-22s |
-                                | Cliente:   %-22s |
-                                | Nombre:    %-22s |
-                                | Importe:   %-6.2f €                |
-                                | Tiempo:    %-22s |
-                                | Fecha:      %-22s |
-                                | Fecha límite: %-22s |
-                                +-----------------------------------+
-                                |    ¡Gracias por su visita!        |
-                                +-----------------------------------+
-                                """.formatted(codigoTicket, "No Residente", nombrePersonaTicket,
-                                dinerosIntroducir, tiempo_salida, "Sin hacer", "Sin hacer"));
-                    }
+                            tiempo_salida, "sin hacer", "sin hacer"));
                 }
             }
+
+
+
+
+
+
+
+
+
+
 
 
             case "2" -> {
