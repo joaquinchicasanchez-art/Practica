@@ -1,13 +1,14 @@
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-void main() throws InterruptedException {
+void main(String[] args) throws InterruptedException {
     final int IDENTIFICADOR = 4096;
+    final String NUMEROS = "123456789";
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "";
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
-    boolean ejecutar = true, dineroSuficiente = true;
+    boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true;
     int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero;
 
@@ -240,10 +241,49 @@ void main() throws InterruptedException {
 
 
                     do {
+
+                        comprobacionTicketTeclado = true;
+
                         codigoTeclado = IO.readln("Introduce el codigo del ticket que usastes: ");
-                        codigoTecladoEntero = Integer.parseInt(codigoTeclado.substring(3));
-                        if (codigoTeclado.substring(0,))
-                    }while (codigoTecladoEntero % IDENTIFICADOR != 0)
+
+                        for (int i = 3; i < codigoTeclado.length(); i++) {
+
+                            if (!String.valueOf(codigoTeclado.charAt(i)).contains(NUMEROS)){
+                                comprobacionTicketTeclado = false;
+                            }
+
+
+                        }
+
+                        if (codigoTeclado.substring(0,3).equals("MAR") || comprobacionTicketTeclado){
+
+                            codigoTecladoEntero = Integer.parseInt(codigoTeclado.substring(3));
+
+                            if (codigoTecladoEntero % IDENTIFICADOR == 0){
+
+                                IO.println("""
+                                         Anotaciones: 
+                                        
+                                            \tEl dinero se puede meter en varios intentos
+                                            \tLa maquina no da cambio
+                                        """);
+
+                                do {
+                                    cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce el dinero " +
+                                            "(Tienes que meter %.2f € aún) : ".formatted(3 - cantidadAbonadaAnulo)));
+                                }while (cantidadAbonadaAnulo < 3.00);
+
+                                IO.println("Multa pagada");
+                                dineroAcumulativoMultas += cantidadAbonadaAnulo;
+                                cantidadAbonadaAnulo = 0;
+                                numMultas += 1;
+
+                            }
+
+                        }
+                    }while (!comprobacionTicketTeclado);
+
+
 
                 } else {
 
