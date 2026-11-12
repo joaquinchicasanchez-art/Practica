@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 void main() throws InterruptedException {
+    final int IDENTIFICADOR = 4096;
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "";
     char residenteTeclado = 0, horaSimulada;
@@ -182,7 +183,7 @@ void main() throws InterruptedException {
 
                     dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
 
-                    codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
+                    codigoTicket = "MAR" + (dinerosCentimos * IDENTIFICADOR);
                     //TODO: para deshacer el codigo es substring (3) y / 7
 
                 }
