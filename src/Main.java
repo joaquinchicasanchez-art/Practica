@@ -255,7 +255,7 @@ void main(String[] args) throws InterruptedException {
 
                         }
 
-                        if (codigoTeclado.substring(0,3).equals("MAR") || comprobacionTicketTeclado){
+                        if (codigoTeclado.substring(0,3).equals("MAR") && comprobacionTicketTeclado){
 
                             codigoTecladoEntero = Integer.parseInt(codigoTeclado.substring(3));
 
@@ -281,7 +281,7 @@ void main(String[] args) throws InterruptedException {
                             }
 
                         }
-                    }while (!comprobacionTicketTeclado);
+                    }while (comprobacionTicketTeclado);
 
 
 
