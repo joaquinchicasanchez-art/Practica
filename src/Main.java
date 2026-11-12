@@ -232,10 +232,10 @@ void main(String[] args) throws InterruptedException {
                         """);
 
                     respuestaOpcion = IO.readln("Introduce respuesta (1-2): ");
-                    if (respuestaOpcion != "1" || respuestaOpcion != "2") {
+                    if (!respuestaOpcion.equals("1") && !respuestaOpcion.equals("2")) {
                         IO.println("Esa opcion no existe");
                     }
-                } while (respuestaOpcion != "1" || respuestaOpcion != "2" );
+                } while (!respuestaOpcion.equals("1") && !respuestaOpcion.equals("2"));
 
                 if (respuestaOpcion.equals("1")){
 

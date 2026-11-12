@@ -1,4 +1,5 @@
 void main() {
+
     intentosIntroducirCodigo = 5;
     IO.println("Proceso para anular una multa\n" +
             "-------------------------------");
@@ -70,6 +71,4 @@ void main() {
         IO.println("Codigo invalido");
     }
 
-
-}
 }
