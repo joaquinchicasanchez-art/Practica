@@ -13,6 +13,6 @@ void main() {
     if (){
         do {
             IO.println("*");
-        } while (true);
+        } while (true );
     }else
 }
