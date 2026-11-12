@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 void main() throws InterruptedException {
-    String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "",tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "", codigoTeclado = "";
+    String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "", nombrePersonaTicket = "", codigoTeclado = "";
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0;
     boolean ejecutar = true;
@@ -50,6 +50,7 @@ void main() throws InterruptedException {
                 horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
                 residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
                 residenteTeclado = Character.toUpperCase(residenteTeclado);
+                horaSimulada = Character.toUpperCase(horaSimulada);
 
 
                 tarifa_ticket = switch (residenteTeclado) {
@@ -117,7 +118,8 @@ void main() throws InterruptedException {
                                 +-----------------------------------+
                                 |    ¡Gracias por su visita!        |
                                 +-----------------------------------+
-                                """.formatted(codigoTicket, "Residente", nombrePersonaTicket, dinerosIntroducir, tiempo_salida, "sin hacer", "sin hacer"));
+                                """.formatted(codigoTicket, "Residente", nombrePersonaTicket, dinerosIntroducir,
+                                tiempo_salida, "sin hacer", "sin hacer"));
                     }
                 }
 
@@ -157,23 +159,26 @@ void main() throws InterruptedException {
                                 +-----------------------------------+
                                 | Código:    %-22s |
                                 | Cliente:   %-22s |
-                                | Nombre:    %-22s  |
+                                | Nombre:    %-22s |
                                 | Importe:   %-6.2f €                |
                                 | Tiempo:    %-22s |
+                                | Fecha:      %-22s |
+                                | Fecha límite: %-22s |
                                 +-----------------------------------+
                                 |    ¡Gracias por su visita!        |
                                 +-----------------------------------+
-                                """.formatted(codigoTicket, "No Residente", nombrePersonaTicket, dinerosIntroducir, tiempo_salida));
+                                """.formatted(codigoTicket, "No Residente", nombrePersonaTicket,
+                                dinerosIntroducir, tiempo_salida, "Sin hacer", "Sin hacer"));
                     }
                 }
             }
 
 
-            case "2", "2.1", "2.2" -> {
+            case "2" -> {
                 intentosIntroducirCodigo = 5;
                 IO.println("Proceso para anular una multa\n" +
                         "-------------------------------");
-                if (codigoTicket.equals("")) IO.println("No hay ninguna multa introducida");
+                if (codigoTicket.isEmpty()) IO.println("No hay ninguna multa introducida");
                 else {
                     do {
                         codigoTeclado = IO.readln("Introduce tu codigo de tu ticket (%d/5): ".formatted(intentosIntroducirCodigo));
@@ -205,7 +210,7 @@ void main() throws InterruptedException {
                                 do {
                                     IO.println("""
                                             
-                                            Anotaciones: 
+                                            Anotaciones:
                                             
                                             \tEl dinero se puede meter en varios intentos
                                             \tLa maquina no da cambio
