@@ -12,5 +12,5 @@ void main() {
     IO.println(fin);
     if (){
 
-    }else
+    }else IO.println("FE");
 }
