@@ -3,7 +3,7 @@ import java.time.temporal.ChronoUnit;
 
 void main(String[] args) throws InterruptedException {
     final int IDENTIFICADOR = 4096;
-    final String NUMEROS = "123456789";
+    final String NUMEROS = "0123456789";
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "";
     char residenteTeclado = 0, horaSimulada;
@@ -248,7 +248,7 @@ void main(String[] args) throws InterruptedException {
 
                         for (int i = 3; i < codigoTeclado.length(); i++) {
 
-                            if (!String.valueOf(codigoTeclado.charAt(i)).contains(NUMEROS)){
+                            if (!NUMEROS.contains(String.valueOf(codigoTeclado.charAt(i)))){
                                 comprobacionTicketTeclado = false;
                             }
 
@@ -262,7 +262,7 @@ void main(String[] args) throws InterruptedException {
                             if (codigoTecladoEntero % IDENTIFICADOR == 0){
 
                                 IO.println("""
-                                         Anotaciones: 
+                                         Anotaciones:
                                         
                                             \tEl dinero se puede meter en varios intentos
                                             \tLa maquina no da cambio
@@ -281,7 +281,7 @@ void main(String[] args) throws InterruptedException {
                             }
 
                         }
-                    }while (comprobacionTicketTeclado);
+                    }while (!comprobacionTicketTeclado);
 
 
 
