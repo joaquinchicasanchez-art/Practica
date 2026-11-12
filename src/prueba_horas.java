@@ -11,6 +11,8 @@ void main() {
     long minutosQueQuedan = ChronoUnit.MINUTES.between(ahora, fin);
     IO.println(fin);
     if (){
-
+        do {
+            IO.println("*");
+        } while (true);
     }else
 }
