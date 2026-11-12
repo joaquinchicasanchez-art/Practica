@@ -127,11 +127,7 @@ void main() throws InterruptedException {
                         segundosAniadir = 0;
                     }
 
-                    dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
-                    ;
 
-                    codigoTicket = "MAR" + (((contadorTicket * 10000) + dinerosCentimos) * 7);
-                    //TODO: para deshacer el codigo es substring (3) y / 7
 
 
                 }
@@ -181,13 +177,16 @@ void main() throws InterruptedException {
                         segundosAniadir = 0;
                     }
 
+
+                }
+
+                if (dineroSuficiente) {
+                    //Generamos el ticket multiplicando por un identificador que vale 4096
+
                     dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
 
                     codigoTicket = "MAR" + (dinerosCentimos * IDENTIFICADOR);
-                    //TODO: para deshacer el codigo es substring (3) y / 7
 
-                }
-                if (dineroSuficiente) {
                     contadorTicket++;
                     dineroAcumuladoTicket += dinerosIntroducir;
                     IO.println("""
