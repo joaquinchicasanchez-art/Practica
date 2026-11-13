@@ -12,6 +12,8 @@ void main(String[] args) throws InterruptedException {
     int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero;
 
+    //TODO: HAY QUE HACER LO DE LAS HORAS
+    //TODO: HAY QUE IMPLEMENTAR TICKET CON NUMERO DE REFERENCIA EN EL CASE 2
     do {
 
         IO.println("""
@@ -81,105 +83,110 @@ void main(String[] args) throws InterruptedException {
                 };
 
                 IO.println("Tus tarifas son:\n " + tarifa_ticket);
-                dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
+                dineroSuficiente = false;
+                do {
+                    dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
 
-                if (residenteTeclado == 'S') {
+                    if (residenteTeclado == 'S') {
 
-                    if (dinerosIntroducir < 0) {
-                        IO.println("Cantidad negativa");
-                        dineroSuficiente = false;
+                        if (dinerosIntroducir < 0) {
+                            IO.println("Cantidad negativa");
+                            dineroSuficiente = false;
+                        }
+
+                        if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) {
+                            IO.println("Dinero Insuficiente");
+                            dineroSuficiente = false;
+                        }
+                        if (dinerosIntroducir >= 0.10) dineroSuficiente = true;
+
+                        if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20) {
+                            tiempo_salida = "15 minutos";
+                            horasAniadir = 0;
+                            minutosAniadir = 15;
+                            segundosAniadir = 0;
+                        }
+                        if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40) {
+                            tiempo_salida = "29 minutos y 50 segundos";
+                            horasAniadir = 0;
+                            minutosAniadir = 29;
+                            segundosAniadir = 50;
+                        }
+                        if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60) {
+                            tiempo_salida = "59 minutos y 31 segundos";
+                            horasAniadir = 0;
+                            minutosAniadir = 59;
+                            segundosAniadir = 31;
+                        }
+                        if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80) {
+                            tiempo_salida = "1 hora, 29 minutos y 12 segundos";
+                            horasAniadir = 1;
+                            minutosAniadir = 29;
+                            segundosAniadir = 12;
+                        }
+
+                        if (dinerosIntroducir >= 0.80) {
+                            tiempo_salida = "2 horas";
+                            horasAniadir = 2;
+                            minutosAniadir = 0;
+                            segundosAniadir = 0;
+                        }
+
+
+
+
                     }
 
-                    if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) {
-                        IO.println("Dinero Insuficiente");
-                        dineroSuficiente = false;
-                    }
-                    if (dinerosIntroducir >= 0.10) dineroSuficiente = true;
+                    if (residenteTeclado == 'N') {
 
-                    if (dinerosIntroducir >= 0.10 && dinerosIntroducir < 0.20) {
-                        tiempo_salida = "15 minutos";
-                        horasAniadir = 0;
-                        minutosAniadir = 15;
-                        segundosAniadir = 0;
-                    }
-                    if (dinerosIntroducir >= 0.20 && dinerosIntroducir < 0.40) {
-                        tiempo_salida = "29 minutos y 50 segundos";
-                        horasAniadir = 0;
-                        minutosAniadir = 29;
-                        segundosAniadir = 50;
-                    }
-                    if (dinerosIntroducir >= 0.40 && dinerosIntroducir < 0.60) {
-                        tiempo_salida = "59 minutos y 31 segundos";
-                        horasAniadir = 0;
-                        minutosAniadir = 59;
-                        segundosAniadir = 31;
-                    }
-                    if (dinerosIntroducir >= 0.60 && dinerosIntroducir < 0.80) {
-                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
-                        horasAniadir = 1;
-                        minutosAniadir = 29;
-                        segundosAniadir = 12;
-                    }
+                        if (dinerosIntroducir < 0) {
+                            IO.println("Cantidad negativa");
+                            dineroSuficiente = false;
+                        }
 
-                    if (dinerosIntroducir >= 0.80) {
-                        tiempo_salida = "2 horas";
-                        horasAniadir = 2;
-                        minutosAniadir = 0;
-                        segundosAniadir = 0;
-                    }
+                        if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) {
+                            IO.println("Dinero Insuficiente");
+                            dineroSuficiente = false;
+                        }
+                        if (dinerosIntroducir >= 0.25) dineroSuficiente = true;
 
+                        if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45) {
+                            tiempo_salida = "15 minutos";
+                            horasAniadir = 0;
+                            minutosAniadir = 15;
+                            segundosAniadir = 0;
+                        }
+                        if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85) {
+                            tiempo_salida = "29 minutos y 50 segundos";
+                            horasAniadir = 0;
+                            minutosAniadir = 29;
+                            segundosAniadir = 50;
+                        }
+                        if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25) {
+                            tiempo_salida = "59 minutos y 31 segundos";
+                            horasAniadir = 0;
+                            minutosAniadir = 59;
+                            segundosAniadir = 31;
+                        }
+                        if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70) {
+                            tiempo_salida = "1 hora, 29 minutos y 12 segundos";
+                            horasAniadir = 1;
+                            minutosAniadir = 29;
+                            segundosAniadir = 12;
+                        }
 
-
-
-                }
-
-                if (residenteTeclado == 'N') {
-
-                    if (dinerosIntroducir < 0) {
-                        IO.println("Cantidad negativa");
-                        dineroSuficiente = false;
-                    }
-
-                    if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) {
-                        IO.println("Dinero Insuficiente");
-                        dineroSuficiente = false;
-                    }
-                    if (dinerosIntroducir >= 0.25) dineroSuficiente = true;
-
-                    if (dinerosIntroducir >= 0.25 && dinerosIntroducir < 0.45) {
-                        tiempo_salida = "15 minutos";
-                        horasAniadir = 0;
-                        minutosAniadir = 15;
-                        segundosAniadir = 0;
-                    }
-                    if (dinerosIntroducir >= 0.45 && dinerosIntroducir < 0.85) {
-                        tiempo_salida = "29 minutos y 50 segundos";
-                        horasAniadir = 0;
-                        minutosAniadir = 29;
-                        segundosAniadir = 50;
-                    }
-                    if (dinerosIntroducir >= 0.85 && dinerosIntroducir < 1.25) {
-                        tiempo_salida = "59 minutos y 31 segundos";
-                        horasAniadir = 0;
-                        minutosAniadir = 59;
-                        segundosAniadir = 31;
-                    }
-                    if (dinerosIntroducir >= 1.25 && dinerosIntroducir < 1.70) {
-                        tiempo_salida = "1 hora, 29 minutos y 12 segundos";
-                        horasAniadir = 1;
-                        minutosAniadir = 29;
-                        segundosAniadir = 12;
-                    }
-
-                    if (dinerosIntroducir >= 1.70) {
-                        tiempo_salida = "2 horas";
-                        horasAniadir = 2;
-                        minutosAniadir = 0;
-                        segundosAniadir = 0;
-                    }
+                        if (dinerosIntroducir >= 1.70) {
+                            tiempo_salida = "2 horas";
+                            horasAniadir = 2;
+                            minutosAniadir = 0;
+                            segundosAniadir = 0;
+                        }
 
 
-                }
+                    }
+                }while (!dineroSuficiente);
+
+
 
                 if (dineroSuficiente) {
                     //Generamos el ticket multiplicando por un identificador que vale 4096
@@ -287,6 +294,22 @@ void main(String[] args) throws InterruptedException {
 
                 } else {
 
+                    IO.println("""
+                                  Anotaciones:
+                                        
+                                  \tEl dinero se puede meter en varios intentos
+                                  \tLa maquina no da cambio
+                                        """);
+
+                    do {
+                        cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce el dinero " +
+                                "(Tienes que meter %.2f € aún) : ".formatted(6 - cantidadAbonadaAnulo)));
+                        IO.println();
+                    }while (cantidadAbonadaAnulo < 6.00);
+                    IO.println("Multa pagada");
+                    dineroAcumulativoMultas += cantidadAbonadaAnulo;
+                    cantidadAbonadaAnulo = 0;
+                    numMultas += 1;
                 }
 
             }
@@ -295,7 +318,7 @@ void main(String[] args) throws InterruptedException {
                         "----------------------------------------------------------");
             }
 
-            case "4", "4.1", "4.2" -> {
+            case "4"-> {
                 IO.println("Proceso para entrar en el menu administrador\n" +
                         "-----------------------------------");
             }
