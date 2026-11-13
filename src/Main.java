@@ -5,12 +5,13 @@ void main(String[] args) throws InterruptedException {
     final int IDENTIFICADOR = 4096;
     final String NUMEROS = "0123456789";
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
-            nombrePersonaTicket = "", codigoTeclado = "";
+            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, usuario = "Admin", contraseñaAdminTeclado,
+            contraseña = "1234";
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
     boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true;
-    int dinerosCentimos = 0, contadorTicket = 1, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
-            horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero;
+    int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
+            horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero, opcionMenuAdmin;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
     //TODO: HAY QUE IMPLEMENTAR TICKET CON NUMERO DE REFERENCIA EN EL CASE 2
@@ -316,11 +317,95 @@ void main(String[] args) throws InterruptedException {
             case "3" -> {
                 IO.println("Consultorio de fecha y hora actual, tarifas y horarios\n" +
                         "----------------------------------------------------------");
+
+                IO.println("""
+        ╔══════════════════════════════════════════════╗
+        ║      🅿️  BIENVENIDO A LA ZONA AZUL DE MARTOS ║
+        ╠══════════════════╦═══════════════╦═══════════╣
+        ║ Duración         ║ No residentes ║ Residentes║
+        ╠══════════════════╬═══════════════╬═══════════╣
+        ║ 00:15:00         ║    0,25 €     ║   0,10 €  ║
+        ║ 00:29:50         ║    0,45 €     ║   0,20 €  ║
+        ║ 00:59:31         ║    0,85 €     ║   0,40 €  ║
+        ║ 01:29:12         ║    1,25 €     ║   0,60 €  ║
+        ║ 02:00:00         ║    1,70 €     ║   0,80 €  ║
+        ╠══════════════════╩═══════════════╩═══════════╣
+        ║ 🕒 HORARIO DE REGULACIÓN                     ║
+        ║  • Lunes a viernes: 09:00 - 14:00            ║
+        ║                     17:00 - 21:00            ║
+        ║                                              ║
+        ║  • Sábados:         09:00 - 14:00            ║
+        ╚══════════════════════════════════════════════╝
+        """);
             }
 
             case "4"-> {
                 IO.println("Proceso para entrar en el menu administrador\n" +
                         "-----------------------------------");
+                do {
+
+                    IO.println("LOGIN");
+                    usuarioAdminTeclado = IO.readln("Usuario: ");
+                    contraseñaAdminTeclado = IO.readln("Contraseña: ");
+
+                    if (!usuarioAdminTeclado.equals(usuario) || !contraseñaAdminTeclado.equals(contraseña)){
+                        IO.println("Usuario o contraseña incorrecto");
+                    }
+                } while (!usuarioAdminTeclado.equals(usuario) || !contraseñaAdminTeclado.equals(contraseña));
+
+                IO.println("""
+                        1. Dinero ingresado en tickets y tickets generados
+                        2. Dinero ingresado por multas y multas anuladas
+                        3. Apagar el software
+                        """);
+
+                do {
+
+                    opcionMenuAdmin = Integer.parseInt(IO.readln("Elige una opcion (1-3): "));
+
+                    if (opcionMenuAdmin > 3 || opcionMenuAdmin < 1) {
+                        IO.println("Opcion inexistente");
+                    }
+
+                } while (opcionMenuAdmin > 3 || opcionMenuAdmin < 1);
+
+                switch (opcionMenuAdmin) {
+                    case 1 : {
+                        IO.println("""
+            ╔══════════════════════════════════════════════╗
+            ║           📊 PANEL DE ADMIN - TICKETS        ║
+            ╠══════════════════════════════════════════════╣
+            ║  ¡Buenas, Admin!                             ║
+            ║                                              ║
+            ║  • Tickets generados:   %10d           ║
+            ║  • Total recaudado:     %10.2f €         ║
+            ╚══════════════════════════════════════════════╝
+            """.formatted(contadorTicket, dineroAcumuladoTicket));
+                        break;
+                    }
+                    case 2 : {
+                        IO.println("""
+            ╔══════════════════════════════════════════════╗
+            ║           🚨 PANEL DE ADMIN - MULTAS         ║
+            ╠══════════════════════════════════════════════╣
+            ║  ¡Buenas, Admin!                             ║
+            ║                                              ║
+            ║  • Multas generadas:    %10d           ║
+            ║  • Total recaudado:     %10.2f €         ║
+            ╚══════════════════════════════════════════════╝
+            """.formatted(numMultas, dineroAcumulativoMultas));
+                        break;
+                    }
+                    case 3 : {
+                        IO.println("Saliendo del sistema ...");
+                        Thread.sleep(1000);
+                        ejecutar = false;
+                        break;
+                    }
+                    default : {
+
+                    }
+                }
             }
             default -> {
                 IO.println("Esa opcion no existe\n" +
