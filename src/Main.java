@@ -6,7 +6,7 @@ void main(String[] args) throws InterruptedException {
     final String NUMEROS = "0123456789";
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, usuario = "Admin", contraseñaAdminTeclado,
-            contraseña = "1234";
+            contraseña = "1234", residente;
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
     boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true;
@@ -89,6 +89,7 @@ void main(String[] args) throws InterruptedException {
                     dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
 
                     if (residenteTeclado == 'S') {
+                        residente = "Residente";
 
                         if (dinerosIntroducir < 0) {
                             IO.println("Cantidad negativa");
@@ -139,6 +140,7 @@ void main(String[] args) throws InterruptedException {
                     }
 
                     if (residenteTeclado == 'N') {
+                        residente = "No residente";
 
                         if (dinerosIntroducir < 0) {
                             IO.println("Cantidad negativa");
@@ -213,7 +215,7 @@ void main(String[] args) throws InterruptedException {
                                 +-----------------------------------+
                                 |    ¡Gracias por su visita!        |
                                 +-----------------------------------+
-                                """.formatted(codigoTicket, "Residente", nombrePersonaTicket, dinerosIntroducir,
+                                """.formatted(codigoTicket, residente, nombrePersonaTicket, dinerosIntroducir,
                             tiempo_salida, "sin hacer", "sin hacer"));
                 }
             }
