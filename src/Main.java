@@ -9,13 +9,12 @@ void main(String[] args) throws InterruptedException {
             contraseña = "1234";
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
-    boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true;
+    boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true;
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero, opcionMenuAdmin;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
     //TODO: HAY QUE IMPLEMENTAR TICKET CON NUMERO DE REFERENCIA EN EL CASE 2
-    //TODO: HACER UN BOTON EN EL MENU ADMIN, PARA SALIR AL MENU PRINCIPAL
     do {
 
         IO.println("""
@@ -315,6 +314,11 @@ void main(String[] args) throws InterruptedException {
                 }
 
             }
+
+
+
+
+
             case "3" -> {
                 IO.println("Consultorio de fecha y hora actual, tarifas y horarios\n" +
                         "----------------------------------------------------------");
@@ -340,6 +344,12 @@ void main(String[] args) throws InterruptedException {
         """);
             }
 
+
+
+
+
+
+
             case "4"-> {
                 IO.println("Proceso para entrar en el menu administrador\n" +
                         "-----------------------------------");
@@ -354,25 +364,29 @@ void main(String[] args) throws InterruptedException {
                     }
                 } while (!usuarioAdminTeclado.equals(usuario) || !contraseñaAdminTeclado.equals(contraseña));
 
-                IO.println("""
+                do {
+                    IO.println("""
+                        
                         1. Dinero ingresado en tickets y tickets generados
                         2. Dinero ingresado por multas y multas anuladas
                         3. Apagar el software
+                        4. Volver al menu principal
+                        
                         """);
 
-                do {
+                    do {
 
-                    opcionMenuAdmin = Integer.parseInt(IO.readln("Elige una opcion (1-3): "));
+                        opcionMenuAdmin = Integer.parseInt(IO.readln("Elige una opcion (1-4): "));
 
-                    if (opcionMenuAdmin > 3 || opcionMenuAdmin < 1) {
-                        IO.println("Opcion inexistente");
-                    }
+                        if (opcionMenuAdmin > 4 || opcionMenuAdmin < 1) {
+                            IO.println("Opcion inexistente");
+                        }
 
-                } while (opcionMenuAdmin > 3 || opcionMenuAdmin < 1);
+                    } while (opcionMenuAdmin > 4 || opcionMenuAdmin < 1);
 
-                switch (opcionMenuAdmin) {
-                    case 1 : {
-                        IO.println("""
+                    switch (opcionMenuAdmin) {
+                        case 1 : {
+                            IO.println("""
             ╔══════════════════════════════════════════════╗
             ║           📊 PANEL DE ADMIN - TICKETS        ║
             ╠══════════════════════════════════════════════╣
@@ -382,10 +396,10 @@ void main(String[] args) throws InterruptedException {
             ║  • Total recaudado:     %10.2f €         ║
             ╚══════════════════════════════════════════════╝
             """.formatted(contadorTicket, dineroAcumuladoTicket));
-                        break;
-                    }
-                    case 2 : {
-                        IO.println("""
+                            break;
+                        }
+                        case 2 : {
+                            IO.println("""
             ╔══════════════════════════════════════════════╗
             ║           🚨 PANEL DE ADMIN - MULTAS         ║
             ╠══════════════════════════════════════════════╣
@@ -395,18 +409,29 @@ void main(String[] args) throws InterruptedException {
             ║  • Total recaudado:     %10.2f €         ║
             ╚══════════════════════════════════════════════╝
             """.formatted(numMultas, dineroAcumulativoMultas));
-                        break;
-                    }
-                    case 3 : {
-                        IO.println("Saliendo del sistema ...");
-                        Thread.sleep(1000);
-                        ejecutar = false;
-                        break;
-                    }
-                    default : {
+                            break;
+                        }
+                        case 3 : {
+                            IO.println("Saliendo del sistema ...");
+                            Thread.sleep(1000);
+                            ejecutar = false;
+                            menuAdmin = false;
+                            break;
+                        }
+                        case 4 : {
+                            IO.println("\nVolviendo al menu ...");
+                            Thread.sleep(1000);
+                            menuAdmin = false;
 
+                            break;
+                        }
+                        default : {
+                            IO.println("Esa opcion no existe");
+                        }
                     }
-                }
+
+                } while (menuAdmin);
+
             }
             default -> {
                 IO.println("Esa opcion no existe\n" +
