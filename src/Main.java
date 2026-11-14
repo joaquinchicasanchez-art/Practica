@@ -6,7 +6,7 @@ void main(String[] args) throws InterruptedException {
     final String NUMEROS = "0123456789";
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, usuario = "Admin", contraseñaAdminTeclado,
-            contraseña = "1234", residente;
+            contraseña = "1234", residente = "";
     char residenteTeclado = 0, horaSimulada;
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
     boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true;
