@@ -8,7 +8,8 @@ void main(String[] args) throws InterruptedException {
     final String NUMEROS = "0123456789", usuario = "Admin", contrasenia = "1234";
 
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
-            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "";
+            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "",
+    diaActual = "";
 
     char residenteTeclado = 0, horaSimulada;
 
@@ -78,14 +79,42 @@ void main(String[] args) throws InterruptedException {
 
                     if (horaSimulada == 'S'){
 
+                        do {
+                            diaActual = IO.readln("Introduce el dia: ");
+                            diaActual = diaActual.toLowerCase();
+                        } while (!diaActual.equals("lunes") &&
+                                !diaActual.equals("martes") &&
+                                !diaActual.equals("miercoles") &&
+                                !diaActual.equals("jueves") &&
+                                !diaActual.equals("viernes") &&
+                                !diaActual.equals("sabado"));
+
+
+
 
                         do {
 
                             horaActual = Integer.parseInt(IO.readln("Introduce la hora: "));
 
-                        } while ();
-                        minutosActual = Integer.parseInt(IO.readln("Introduce los minutos: "));
-                        segundosActual = Integer.parseInt(IO.readln("Introduce los segundos: "));
+                            if (horaActual < 0 || horaActual > 23) IO.println("La hora debera estar entre 0 y 23");
+
+                        } while (horaActual < 0 || horaActual > 23);
+
+                        do {
+
+                            minutosActual = Integer.parseInt(IO.readln("Introduce los minutos: "));
+
+                            if (minutosActual < 0 || minutosActual > 59) IO.println("Los minutos deberan estar entre 0 y 59");
+
+                        } while (minutosActual < 0 || minutosActual > 59);
+
+                        do {
+
+                            segundosActual = Integer.parseInt(IO.readln("Introduce los segundos: "));
+
+                            if (segundosActual < 0 || segundosActual > 59) IO.println("Los segundos deberan estar entre 0 y 59");
+
+                        } while (segundosActual < 0 || segundosActual > 59);
                     }
 
                 } while (horaSimulada != 'S' && horaSimulada != 'N');
