@@ -2,19 +2,26 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 void main(String[] args) throws InterruptedException {
+    LocalDateTime fechaInicio, fechaFin;
+
     final int IDENTIFICADOR = 4096;
-    final String NUMEROS = "0123456789";
+    final String NUMEROS = "0123456789", usuario = "Admin", contrasenia = "1234";
+
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
-            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, usuario = "Admin", contraseñaAdminTeclado,
-            contraseña = "1234", residente = "";
+            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "";
+
     char residenteTeclado = 0, horaSimulada;
+
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
+
     boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true;
+
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
-            horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero, opcionMenuAdmin;
+            horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero, opcionMenuAdmin, horaActual, minutosActual,
+            segundosActual;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
-    //TODO: HAY QUE IMPLEMENTAR TICKET CON NUMERO DE REFERENCIA EN EL CASE 2
+    //TODO: HAY QUE IMPLEMENTER TICKET CON NUMERO DE REFERENCE EN EL CASE 2
     do {
 
         IO.println("""
@@ -52,16 +59,51 @@ void main(String[] args) throws InterruptedException {
                     IO.println();
                 }
 
-                //todo Hay que configurar lo de simular la hora, si dices que si, la hora la pones tu, si dices que no te coge la hora con el datatime.
+
 
                 // Preguntamos el nombre, si quiere simular la hora y si es residente
-                nombrePersonaTicket = IO.readln("Introduzca su nombre: ");
-                horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
-                residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
+
+                do {
+
+                    nombrePersonaTicket = IO.readln("Introduzca su nombre: ");
+                    if (nombrePersonaTicket.isEmpty()) IO.println("No has introducido nada. ");
+
+                } while (nombrePersonaTicket.isEmpty());
+
+                do {
+                    horaSimulada = (IO.readln("Deseas simular la hora?: S/N ").charAt(0));
+                    horaSimulada = Character.toUpperCase(horaSimulada);
+
+                    if (horaSimulada != 'S' && horaSimulada != 'N') IO.println("Esa opción no existe");
+
+                    if (horaSimulada == 'S'){
+
+
+                        do {
+
+                            horaActual = Integer.parseInt(IO.readln("Introduce la hora: "));
+
+                        } while ();
+                        minutosActual = Integer.parseInt(IO.readln("Introduce los minutos: "));
+                        segundosActual = Integer.parseInt(IO.readln("Introduce los segundos: "));
+                    }
+
+                } while (horaSimulada != 'S' && horaSimulada != 'N');
+
+                do {
+                    residenteTeclado = (IO.readln("Eres residente?: S/N ").charAt(0));
+                    residenteTeclado = Character.toUpperCase(residenteTeclado);
+
+                    if (residenteTeclado != 'S' && residenteTeclado != 'N') IO.println("Esa opción no existe");
+
+                } while (residenteTeclado != 'S' && residenteTeclado != 'N');
+
+
+
 
                 //Nos aseguramos que la letra este en mayuscula para que el switch no de problemas
-                residenteTeclado = Character.toUpperCase(residenteTeclado);
-                horaSimulada = Character.toUpperCase(horaSimulada);
+
+
 
                 //Imprimimos los precios dependiendo si es residente o no
 
@@ -135,8 +177,6 @@ void main(String[] args) throws InterruptedException {
                         }
 
 
-
-
                     }
 
                     if (residenteTeclado == 'N') {
@@ -187,59 +227,46 @@ void main(String[] args) throws InterruptedException {
 
 
                     }
-                }while (!dineroSuficiente);
+                } while (!dineroSuficiente);
 
 
+                //Generamos el ticket multiplicando por un identificador que vale 4096
 
-                if (dineroSuficiente) {
-                    //Generamos el ticket multiplicando por un identificador que vale 4096
+                dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
 
-                    dinerosCentimos = (int) Math.round(dinerosIntroducir * 100);
+                codigoTicket = "MAR" + (dinerosCentimos * IDENTIFICADOR);
 
-                    codigoTicket = "MAR" + (dinerosCentimos * IDENTIFICADOR);
-
-                    contadorTicket++;
-                    dineroAcumuladoTicket += dinerosIntroducir;
-                    IO.println("""
-                                +-----------------------------------+
-                                |            ZONA AZUL              |
-                                |     TICKET DE APARCAMIENTO        |
-                                +-----------------------------------+
-                                | Código:    %-22s |
-                                | Cliente:   %-22s |
-                                | Nombre:    %-22s |
-                                | Importe:   %-6.2f €                |
-                                | Tiempo:    %-22s |
-                                | Fecha:      %-22s |
-                                | Fecha límite: %-22s |
-                                +-----------------------------------+
-                                |    ¡Gracias por su visita!        |
-                                +-----------------------------------+
-                                """.formatted(codigoTicket, residente, nombrePersonaTicket, dinerosIntroducir,
-                            tiempo_salida, "sin hacer", "sin hacer"));
-                }
+                contadorTicket++;
+                dineroAcumuladoTicket += dinerosIntroducir;
+                IO.println("""
+                        +-----------------------------------+
+                        |            ZONA AZUL              |
+                        |     TICKET DE APARCAMIENTO        |
+                        +-----------------------------------+
+                        | Código:    %-22s |
+                        | Cliente:   %-22s |
+                        | Nombre:    %-22s |
+                        | Importe:   %-6.2f €                |
+                        | Tiempo:    %-22s |
+                        | Fecha:      %-22s |
+                        | Fecha límite: %-22s |
+                        +-----------------------------------+
+                        |    ¡Gracias por su visita!        |
+                        +-----------------------------------+
+                        """.formatted(codigoTicket, residente, nombrePersonaTicket, dinerosIntroducir,
+                        tiempo_salida, "sin hacer", "sin hacer"));
             }
-
-
-
-
-
-
-
-
-
-
 
 
             case "2" -> {
 
                 do {
                     IO.println("""
-                        MENU DE ANULACION DE MULTAS
-                        ============================
-                        1. Exceder el tiempo permitido (3€)
-                        2. Carecer de ticket (6€)
-                        """);
+                            MENU DE ANULACION DE MULTAS
+                            ============================
+                            1. Exceder el tiempo permitido (3€)
+                            2. Carecer de ticket (6€)
+                            """);
 
                     respuestaOpcion = IO.readln("Introduce respuesta (1-2): ");
                     if (!respuestaOpcion.equals("1") && !respuestaOpcion.equals("2")) {
@@ -247,7 +274,7 @@ void main(String[] args) throws InterruptedException {
                     }
                 } while (!respuestaOpcion.equals("1") && !respuestaOpcion.equals("2"));
 
-                if (respuestaOpcion.equals("1")){
+                if (respuestaOpcion.equals("1")) {
 
 
                     do {
@@ -258,18 +285,18 @@ void main(String[] args) throws InterruptedException {
 
                         for (int i = 3; i < codigoTeclado.length(); i++) {
 
-                            if (!NUMEROS.contains(String.valueOf(codigoTeclado.charAt(i)))){
+                            if (!NUMEROS.contains(String.valueOf(codigoTeclado.charAt(i)))) {
                                 comprobacionTicketTeclado = false;
                             }
 
 
                         }
 
-                        if (codigoTeclado.substring(0,3).equals("MAR") && comprobacionTicketTeclado){
+                        if (codigoTeclado.substring(0, 3).equals("MAR") && comprobacionTicketTeclado) {
 
                             codigoTecladoEntero = Integer.parseInt(codigoTeclado.substring(3));
 
-                            if (codigoTecladoEntero % IDENTIFICADOR == 0){
+                            if (codigoTecladoEntero % IDENTIFICADOR == 0) {
 
                                 IO.println("""
                                          Anotaciones:
@@ -281,7 +308,7 @@ void main(String[] args) throws InterruptedException {
                                 do {
                                     cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce el dinero " +
                                             "(Tienes que meter %.2f € aún) : ".formatted(3 - cantidadAbonadaAnulo)));
-                                }while (cantidadAbonadaAnulo < 3.00);
+                                } while (cantidadAbonadaAnulo < 3.00);
 
                                 IO.println("Multa pagada");
                                 dineroAcumulativoMultas += cantidadAbonadaAnulo;
@@ -291,24 +318,23 @@ void main(String[] args) throws InterruptedException {
                             }
 
                         }
-                    }while (!comprobacionTicketTeclado);
-
+                    } while (!comprobacionTicketTeclado);
 
 
                 } else {
 
                     IO.println("""
-                                  Anotaciones:
-                                        
-                                  \tEl dinero se puede meter en varios intentos
-                                  \tLa maquina no da cambio
-                                        """);
+                            Anotaciones:
+                            
+                            \tEl dinero se puede meter en varios intentos
+                            \tLa maquina no da cambio
+                            """);
 
                     do {
                         cantidadAbonadaAnulo += Double.parseDouble(IO.readln("Introduce el dinero " +
                                 "(Tienes que meter %.2f € aún) : ".formatted(6 - cantidadAbonadaAnulo)));
                         IO.println();
-                    }while (cantidadAbonadaAnulo < 6.00);
+                    } while (cantidadAbonadaAnulo < 6.00);
                     IO.println("Multa pagada");
                     dineroAcumulativoMultas += cantidadAbonadaAnulo;
                     cantidadAbonadaAnulo = 0;
@@ -318,63 +344,55 @@ void main(String[] args) throws InterruptedException {
             }
 
 
-
-
-
             case "3" -> {
                 IO.println("Consultorio de fecha y hora actual, tarifas y horarios\n" +
                         "----------------------------------------------------------");
 
                 IO.println("""
-        ╔══════════════════════════════════════════════╗
-        ║      🅿️  BIENVENIDO A LA ZONA AZUL DE MARTOS ║
-        ╠══════════════════╦═══════════════╦═══════════╣
-        ║ Duración         ║ No residentes ║ Residentes║
-        ╠══════════════════╬═══════════════╬═══════════╣
-        ║ 00:15:00         ║    0,25 €     ║   0,10 €  ║
-        ║ 00:29:50         ║    0,45 €     ║   0,20 €  ║
-        ║ 00:59:31         ║    0,85 €     ║   0,40 €  ║
-        ║ 01:29:12         ║    1,25 €     ║   0,60 €  ║
-        ║ 02:00:00         ║    1,70 €     ║   0,80 €  ║
-        ╠══════════════════╩═══════════════╩═══════════╣
-        ║ 🕒 HORARIO DE REGULACIÓN                     ║
-        ║  • Lunes a viernes: 09:00 - 14:00            ║
-        ║                     17:00 - 21:00            ║
-        ║                                              ║
-        ║  • Sábados:         09:00 - 14:00            ║
-        ╚══════════════════════════════════════════════╝
-        """);
+                        ╔══════════════════════════════════════════════╗
+                        ║      🅿️  BIENVENIDO A LA ZONA AZUL DE MARTOS ║
+                        ╠══════════════════╦═══════════════╦═══════════╣
+                        ║ Duración         ║ No residentes ║ Residentes║
+                        ╠══════════════════╬═══════════════╬═══════════╣
+                        ║ 00:15:00         ║    0,25 €     ║   0,10 €  ║
+                        ║ 00:29:50         ║    0,45 €     ║   0,20 €  ║
+                        ║ 00:59:31         ║    0,85 €     ║   0,40 €  ║
+                        ║ 01:29:12         ║    1,25 €     ║   0,60 €  ║
+                        ║ 02:00:00         ║    1,70 €     ║   0,80 €  ║
+                        ╠══════════════════╩═══════════════╩═══════════╣
+                        ║ 🕒 HORARIO DE REGULACIÓN                     ║
+                        ║  • Lunes a viernes: 09:00 - 14:00            ║
+                        ║                     17:00 - 21:00            ║
+                        ║                                              ║
+                        ║  • Sábados:         09:00 - 14:00            ║
+                        ╚══════════════════════════════════════════════╝
+                        """);
             }
 
 
-
-
-
-
-
-            case "4"-> {
+            case "4" -> {
                 IO.println("Proceso para entrar en el menu administrador\n" +
                         "-----------------------------------");
                 do {
 
                     IO.println("LOGIN");
                     usuarioAdminTeclado = IO.readln("Usuario: ");
-                    contraseñaAdminTeclado = IO.readln("Contraseña: ");
+                    contraseniaAdminTeclado = IO.readln("contrasenia: ");
 
-                    if (!usuarioAdminTeclado.equals(usuario) || !contraseñaAdminTeclado.equals(contraseña)){
-                        IO.println("Usuario o contraseña incorrecto");
+                    if (!usuarioAdminTeclado.equals(usuario) || !contraseniaAdminTeclado.equals(contrasenia)) {
+                        IO.println("Usuario o contrasenia incorrecto");
                     }
-                } while (!usuarioAdminTeclado.equals(usuario) || !contraseñaAdminTeclado.equals(contraseña));
+                } while (!usuarioAdminTeclado.equals(usuario) || !contraseniaAdminTeclado.equals(contrasenia));
 
                 do {
                     IO.println("""
-                        
-                        1. Dinero ingresado en tickets y tickets generados
-                        2. Dinero ingresado por multas y multas anuladas
-                        3. Apagar el software
-                        4. Volver al menu principal
-                        
-                        """);
+                            
+                            1. Dinero ingresado en tickets y tickets generados
+                            2. Dinero ingresado por multas y multas anuladas
+                            3. Apagar el software
+                            4. Volver al menu principal
+                            
+                            """);
 
                     do {
 
@@ -387,47 +405,47 @@ void main(String[] args) throws InterruptedException {
                     } while (opcionMenuAdmin > 4 || opcionMenuAdmin < 1);
 
                     switch (opcionMenuAdmin) {
-                        case 1 : {
+                        case 1: {
                             IO.println("""
-            ╔══════════════════════════════════════════════╗
-            ║           📊 PANEL DE ADMIN - TICKETS        ║
-            ╠══════════════════════════════════════════════╣
-            ║  ¡Buenas, Admin!                             ║
-            ║                                              ║
-            ║  • Tickets generados:   %10d           ║
-            ║  • Total recaudado:     %10.2f €         ║
-            ╚══════════════════════════════════════════════╝
-            """.formatted(contadorTicket, dineroAcumuladoTicket));
+                                    ╔══════════════════════════════════════════════╗
+                                    ║           📊 PANEL DE ADMIN - TICKETS        ║
+                                    ╠══════════════════════════════════════════════╣
+                                    ║  ¡Buenas, Admin!                             ║
+                                    ║                                              ║
+                                    ║  • Tickets generados:   %10d           ║
+                                    ║  • Total recaudado:     %10.2f €         ║
+                                    ╚══════════════════════════════════════════════╝
+                                    """.formatted(contadorTicket, dineroAcumuladoTicket));
                             break;
                         }
-                        case 2 : {
+                        case 2: {
                             IO.println("""
-            ╔══════════════════════════════════════════════╗
-            ║           🚨 PANEL DE ADMIN - MULTAS         ║
-            ╠══════════════════════════════════════════════╣
-            ║  ¡Buenas, Admin!                             ║
-            ║                                              ║
-            ║  • Multas generadas:    %10d           ║
-            ║  • Total recaudado:     %10.2f €         ║
-            ╚══════════════════════════════════════════════╝
-            """.formatted(numMultas, dineroAcumulativoMultas));
+                                    ╔══════════════════════════════════════════════╗
+                                    ║           🚨 PANEL DE ADMIN - MULTAS         ║
+                                    ╠══════════════════════════════════════════════╣
+                                    ║  ¡Buenas, Admin!                             ║
+                                    ║                                              ║
+                                    ║  • Multas generadas:    %10d           ║
+                                    ║  • Total recaudado:     %10.2f €         ║
+                                    ╚══════════════════════════════════════════════╝
+                                    """.formatted(numMultas, dineroAcumulativoMultas));
                             break;
                         }
-                        case 3 : {
+                        case 3: {
                             IO.println("Saliendo del sistema ...");
                             Thread.sleep(1000);
                             ejecutar = false;
                             menuAdmin = false;
                             break;
                         }
-                        case 4 : {
+                        case 4: {
                             IO.println("\nVolviendo al menu ...");
                             Thread.sleep(1000);
                             menuAdmin = false;
 
                             break;
                         }
-                        default : {
+                        default: {
                             IO.println("Esa opcion no existe");
                         }
                     }

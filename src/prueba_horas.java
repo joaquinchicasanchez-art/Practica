@@ -6,8 +6,14 @@ void main() {
     LocalDateTime fin = ahora.plusMinutes(89).plusSeconds(12);   // tramo de 01:29:12
 
     int hora = ahora.getHour();
+    int minutos = ahora.getMinute();
     int diaSemana = ahora.getDayOfWeek().getValue();   // 1 = lunes … 7 = domingo
 
     long minutosQueQuedan = ChronoUnit.MINUTES.between(ahora, fin);
     IO.println(fin);
+    IO.println(hora);
+    IO.println(diaSemana);
+    IO.println(ahora);
+    IO.println(minutos);
+    IO.println(minutosQueQuedan);
 }
