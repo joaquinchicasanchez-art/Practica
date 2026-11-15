@@ -18,7 +18,8 @@ void main(String[] args) throws InterruptedException {
 
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir = 0, minutosAniadir = 0, segundosAniadir = 0, codigoTecladoEntero, opcionMenuAdmin, horaActual = 0,
-            minutosActual = 0, segundosActual = 0, diaActual = 0;
+            minutosActual = 0, segundosActual = 0, diaActual = 0, horasRestantesHorario = 0, minutosRestantesHorario= 0,
+            segundosRestantesHorario = 0, horaLimite = 0, minutoLimite = 0, segundosLimite = 0;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
     //TODO: HAY QUE IMPLEMENTER TICKET CON NUMERO DE REFERENCE EN EL CASE 2
@@ -78,7 +79,7 @@ void main(String[] args) throws InterruptedException {
                     if (horaSimulada == 'S') {
 
                         do {
-                            diaActual = Integer.parseInt(IO.readln("Introduce el dia: "));
+                            diaActual = Integer.parseInt(IO.readln("Introduce el dia (1-7): "));
 
                             if (diaActual < 1 || diaActual > 7)
                                 IO.println("Ese dia no es valido, introduce un numero entre 1 y 7");
@@ -260,33 +261,130 @@ void main(String[] args) throws InterruptedException {
 
 
                 switch (diaActual) {
-                    case 1, 2, 3, 4: {
+                    case 1, 2, 3, 4, 5 -> {
                         if (horaActual < 9) {
                             horaActual = 9;
                             minutosActual = 0;
                             segundosActual = 0;
 
-                            horaActual += horasAniadir;
-                            minutosActual += minutosAniadir;
-                            segundosActual += segundosAniadir;
-                        } else if (horaActual >= 9 && horaActual < 14) {
+                            horaLimite = horaActual + horasAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            segundosLimite = segundosActual + segundosAniadir;
 
+                        } else if (horaActual < 14) {
 
+                            segundosLimite = segundosActual + segundosAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            horaLimite = horaActual + horasAniadir;
+
+                            if (segundosLimite > 59) {
+                                minutoLimite++;
+                                segundosLimite -= 60;
+                            }
+                            if (minutoLimite > 59) {
+                                horaLimite++;
+                                minutoLimite -= 60;
+                            }
+
+                            if (horaLimite > 14 || (horaLimite == 14 && (minutoLimite > 0 || segundosLimite > 0))) {
+                                int excesoHoras = horaLimite - 14;
+                                horaLimite = 17 + excesoHoras;
+
+                            }
+
+                        } else if (horaActual < 17) {
+                            horaActual = 17;
+                            minutosActual = 0;
+                            segundosActual = 0;
+
+                            horaLimite = horaActual + horasAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            segundosLimite = segundosActual + segundosAniadir;
+
+                        } else if (horaActual < 21) {
+                            segundosLimite = segundosActual + segundosAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            horaLimite = horaActual + horasAniadir;
+
+                            if (segundosLimite > 59) {
+                                minutoLimite++;
+                                segundosLimite -= 60;
+                            }
+                            if (minutoLimite > 59) {
+                                horaLimite++;
+                                minutoLimite -= 60;
+                            }
+
+                            if (horaLimite > 21 || (horaLimite == 21 && (minutoLimite > 0 || segundosLimite > 0))) {
+                                int excesoHoras = horaLimite - 21;
+                                horaLimite = 9 + excesoHoras;
+                                diaActual++; // Pasa al día siguiente
+                            }
+
+                        } else {
+                            horaActual = 9;
+                            minutosActual = 0;
+                            segundosActual = 0;
+                            diaActual++;
+
+                            horaLimite = horaActual + horasAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            segundosLimite = segundosActual + segundosAniadir;
                         }
-
-
-                        break;
                     }
-                    case 5: {
 
-                        break;
+                    case 6 -> {
+
+                        if (horaActual < 9) {
+                            horaActual = 9;
+                            minutosActual = 0;
+                            segundosActual = 0;
+
+                            horaLimite = horaActual + horasAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            segundosLimite = segundosActual + segundosAniadir;
+
+                        } else if (horaActual < 14) {
+                            segundosLimite = segundosActual + segundosAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            horaLimite = horaActual + horasAniadir;
+
+                            if (segundosLimite > 59) {
+                                minutoLimite++;
+                                segundosLimite -= 60;
+                            }
+                            if (minutoLimite > 59) {
+                                horaLimite++;
+                                minutoLimite -= 60;
+                            }
+
+                            if (horaLimite > 14 || (horaLimite == 14 && (minutoLimite > 0 || segundosLimite > 0))) {
+                                int excesoHoras = horaLimite - 14;
+                                horaLimite = 9 + excesoHoras;
+                                diaActual = 1;
+                            }
+
+                        } else {
+                            horaActual = 9;
+                            minutosActual = 0;
+                            segundosActual = 0;
+                            diaActual = 1;
+
+                            horaLimite = horaActual + horasAniadir;
+                            minutoLimite = minutosActual + minutosAniadir;
+                            segundosLimite = segundosActual + segundosAniadir;
+                        }
                     }
-                    case 6: {
 
-                        break;
-                    }
-                    case 7: {
+                    case 7 -> {
+                        horaActual = 9;
+                        minutosActual = 0;
+                        segundosActual = 0;
+                        diaActual = 1;
 
+                        horaLimite = horaActual + horasAniadir;
+                        minutoLimite = minutosActual + minutosAniadir;
+                        segundosLimite = segundosActual + segundosAniadir;
                     }
                 }
 
@@ -309,13 +407,13 @@ void main(String[] args) throws InterruptedException {
                         | Nombre:    %-22s |
                         | Importe:   %-6.2f €                |
                         | Tiempo:    %-22s |
-                        | Fecha:      %-22s |
-                        | Fecha límite: %-22s |
+                        | Fecha:      %d %d %d |
+                        | Fecha límite: %d %d %d |
                         +-----------------------------------+
                         |    ¡Gracias por su visita!        |
                         +-----------------------------------+
                         """.formatted(codigoTicket, residente, nombrePersonaTicket, dinerosIntroducir,
-                        tiempo_salida, "sin hacer", "sin hacer"));
+                        tiempo_salida, horaActual, minutosActual, segundosActual, horaLimite, minutoLimite, segundosLimite));
             }
 
 
