@@ -4,18 +4,19 @@ import java.time.temporal.ChronoUnit;
 void main(String[] args) throws InterruptedException {
     LocalDateTime fechaInicio;
 
-    final int IDENTIFICADOR = 4096;
+    final int IDENTIFICADOR = 4096, IDENTIFICADOR_MULTA = 7919;
     final String NUMEROS = "0123456789", usuario = "Admin", contrasenia = "1234";
 
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "",
-            diaSemanaActual = "", diaSemanaLimite = "", horaCompraTexto = "", horaVenceTexto = "";
+            diaSemanaActual = "", diaSemanaLimite = "", horaCompraTexto = "", horaVenceTexto = "",
+            motivoMulta = "", numeroTicketMulta = "";
 
     char residenteTeclado = 0, horaSimulada;
 
     double dinerosIntroducir = 0, cantidadAbonadaAnulo = 0, dineroAcumulativoMultas = 0, dineroAcumuladoTicket = 0;
 
-    boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true;
+    boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true, multaPagada = false;
 
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir = 0, minutosAniadir = 0, segundosAniadir = 0, codigoTecladoEntero, opcionMenuAdmin, horaActual = 0,
@@ -457,6 +458,8 @@ void main(String[] args) throws InterruptedException {
 
             case "2" -> {
 
+                multaPagada = false;
+
                 do {
                     IO.println("""
                             MENU DE ANULACION DE MULTAS
@@ -509,11 +512,16 @@ void main(String[] args) throws InterruptedException {
 
                                 IO.println("Multa pagada");
                                 dineroAcumulativoMultas += cantidadAbonadaAnulo;
-                                cantidadAbonadaAnulo = 0;
                                 numMultas += 1;
+                                multaPagada = true;
+                                motivoMulta = "Exceder el tiempo";
 
+                            } else {
+                                IO.println("El codigo no es autentico. Multa no anulada.");
                             }
 
+                        } else {
+                            IO.println("Codigo no valido.");
                         }
                     } while (!comprobacionTicketTeclado);
 
@@ -534,8 +542,27 @@ void main(String[] args) throws InterruptedException {
                     } while (cantidadAbonadaAnulo < 6.00);
                     IO.println("Multa pagada");
                     dineroAcumulativoMultas += cantidadAbonadaAnulo;
-                    cantidadAbonadaAnulo = 0;
                     numMultas += 1;
+                    multaPagada = true;
+                    motivoMulta = "Carecer de ticket";
+                }
+
+                if (multaPagada) {
+                    numeroTicketMulta = "ANU" + (numMultas * IDENTIFICADOR_MULTA + (int) Math.round(cantidadAbonadaAnulo * 100) * 13);
+                    IO.println("""
+                            +-----------------------------------+
+                            |       AYUNTAMIENTO DE MARTOS      |
+                            |           Martos (Jaen)           |
+                            |   TICKET DE ANULACION DE MULTA    |
+                            +-----------------------------------+
+                            | Ticket:    %-22s |
+                            | Motivo:    %-22s |
+                            | Importe €: %-22.2f |
+                            +-----------------------------------+
+                            |    Multa anulada correctamente    |
+                            +-----------------------------------+
+                            """.formatted(numeroTicketMulta, motivoMulta, cantidadAbonadaAnulo));
+                    cantidadAbonadaAnulo = 0;
                 }
 
             }
