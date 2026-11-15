@@ -8,8 +8,7 @@ void main(String[] args) throws InterruptedException {
     final String NUMEROS = "0123456789", usuario = "Admin", contrasenia = "1234";
 
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
-            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "",
-    diaActual = "";
+            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "";
 
     char residenteTeclado = 0, horaSimulada;
 
@@ -18,8 +17,8 @@ void main(String[] args) throws InterruptedException {
     boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true;
 
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
-            horasAniadir, minutosAniadir, segundosAniadir, codigoTecladoEntero, opcionMenuAdmin, horaActual, minutosActual,
-            segundosActual;
+            horasAniadir = 0, minutosAniadir = 0, segundosAniadir = 0, codigoTecladoEntero, opcionMenuAdmin, horaActual = 0,
+            minutosActual = 0, segundosActual = 0, diaActual = 0;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
     //TODO: HAY QUE IMPLEMENTER TICKET CON NUMERO DE REFERENCE EN EL CASE 2
@@ -61,7 +60,6 @@ void main(String[] args) throws InterruptedException {
                 }
 
 
-
                 // Preguntamos el nombre, si quiere simular la hora y si es residente
 
                 do {
@@ -77,19 +75,15 @@ void main(String[] args) throws InterruptedException {
 
                     if (horaSimulada != 'S' && horaSimulada != 'N') IO.println("Esa opción no existe");
 
-                    if (horaSimulada == 'S'){
+                    if (horaSimulada == 'S') {
 
                         do {
-                            diaActual = IO.readln("Introduce el dia: ");
-                            diaActual = diaActual.toLowerCase();
-                        } while (!diaActual.equals("lunes") &&
-                                !diaActual.equals("martes") &&
-                                !diaActual.equals("miercoles") &&
-                                !diaActual.equals("jueves") &&
-                                !diaActual.equals("viernes") &&
-                                !diaActual.equals("sabado"));
+                            diaActual = Integer.parseInt(IO.readln("Introduce el dia: "));
 
+                            if (diaActual < 1 || diaActual > 7)
+                                IO.println("Ese dia no es valido, introduce un numero entre 1 y 7");
 
+                        } while (diaActual < 1 || diaActual > 7);
 
 
                         do {
@@ -104,7 +98,8 @@ void main(String[] args) throws InterruptedException {
 
                             minutosActual = Integer.parseInt(IO.readln("Introduce los minutos: "));
 
-                            if (minutosActual < 0 || minutosActual > 59) IO.println("Los minutos deberan estar entre 0 y 59");
+                            if (minutosActual < 0 || minutosActual > 59)
+                                IO.println("Los minutos deberan estar entre 0 y 59");
 
                         } while (minutosActual < 0 || minutosActual > 59);
 
@@ -112,11 +107,22 @@ void main(String[] args) throws InterruptedException {
 
                             segundosActual = Integer.parseInt(IO.readln("Introduce los segundos: "));
 
-                            if (segundosActual < 0 || segundosActual > 59) IO.println("Los segundos deberan estar entre 0 y 59");
+                            if (segundosActual < 0 || segundosActual > 59)
+                                IO.println("Los segundos deberan estar entre 0 y 59");
 
                         } while (segundosActual < 0 || segundosActual > 59);
                     }
+                    if (horaSimulada == 'N') {
 
+
+                        fechaInicio = LocalDateTime.now();
+
+                        horaActual = fechaInicio.getHour();
+                        minutosActual = fechaInicio.getMinute();
+                        segundosActual = fechaInicio.getSecond();
+
+
+                    }
                 } while (horaSimulada != 'S' && horaSimulada != 'N');
 
                 do {
@@ -126,12 +132,6 @@ void main(String[] args) throws InterruptedException {
                     if (residenteTeclado != 'S' && residenteTeclado != 'N') IO.println("Esa opción no existe");
 
                 } while (residenteTeclado != 'S' && residenteTeclado != 'N');
-
-
-
-
-                //Nos aseguramos que la letra este en mayuscula para que el switch no de problemas
-
 
 
                 //Imprimimos los precios dependiendo si es residente o no
@@ -155,7 +155,7 @@ void main(String[] args) throws InterruptedException {
                 };
 
                 IO.println("Tus tarifas son:\n " + tarifa_ticket);
-                dineroSuficiente = false;
+
                 do {
                     dinerosIntroducir = Double.parseDouble(IO.readln("Introduce la cantidad de € a introducir: "));
 
@@ -257,6 +257,38 @@ void main(String[] args) throws InterruptedException {
 
                     }
                 } while (!dineroSuficiente);
+
+
+                switch (diaActual) {
+                    case 1, 2, 3, 4: {
+                        if (horaActual < 9) {
+                            horaActual = 9;
+                            minutosActual = 0;
+                            segundosActual = 0;
+
+                            horaActual += horasAniadir;
+                            minutosActual += minutosAniadir;
+                            segundosActual += segundosAniadir;
+                        } else if (horaActual >= 9 && horaActual < 14) {
+
+
+                        }
+
+
+                        break;
+                    }
+                    case 5: {
+
+                        break;
+                    }
+                    case 6: {
+
+                        break;
+                    }
+                    case 7: {
+
+                    }
+                }
 
 
                 //Generamos el ticket multiplicando por un identificador que vale 4096
