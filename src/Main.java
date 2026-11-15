@@ -2,13 +2,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 void main(String[] args) throws InterruptedException {
-    LocalDateTime fechaInicio, fechaFin;
+    LocalDateTime fechaInicio;
 
     final int IDENTIFICADOR = 4096;
     final String NUMEROS = "0123456789", usuario = "Admin", contrasenia = "1234";
 
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
-            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "";
+            nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "",
+            diaSemanaActual = "", diaSemanaLimite = "";
 
     char residenteTeclado = 0, horaSimulada;
 
@@ -18,8 +19,8 @@ void main(String[] args) throws InterruptedException {
 
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir = 0, minutosAniadir = 0, segundosAniadir = 0, codigoTecladoEntero, opcionMenuAdmin, horaActual = 0,
-            minutosActual = 0, segundosActual = 0, diaActual = 0, horasRestantesHorario = 0, minutosRestantesHorario= 0,
-            segundosRestantesHorario = 0, horaLimite = 0, minutoLimite = 0, segundosLimite = 0;
+            minutosActual = 0, segundosActual = 0, diaActual = 0, horasRestantesHorario = 0, minutosRestantesHorario = 0,
+            segundosRestantesHorario = 0, horaLimite = 0, minutoLimite = 0, segundosLimite = 0, diaLimite = 0;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
     //TODO: HAY QUE IMPLEMENTER TICKET CON NUMERO DE REFERENCE EN EL CASE 2
@@ -121,8 +122,8 @@ void main(String[] args) throws InterruptedException {
                         horaActual = fechaInicio.getHour();
                         minutosActual = fechaInicio.getMinute();
                         segundosActual = fechaInicio.getSecond();
-
-
+                        diaActual = fechaInicio.getDayOfWeek().getValue();
+                        IO.println(diaActual);
                     }
                 } while (horaSimulada != 'S' && horaSimulada != 'N');
 
@@ -168,7 +169,7 @@ void main(String[] args) throws InterruptedException {
                             dineroSuficiente = false;
                         }
 
-                        if (dinerosIntroducir < 0.10 && dinerosIntroducir > 0) {
+                        if (dinerosIntroducir < 0.10 && dinerosIntroducir >= 0) {
                             IO.println("Dinero Insuficiente");
                             dineroSuficiente = false;
                         }
@@ -217,7 +218,7 @@ void main(String[] args) throws InterruptedException {
                             dineroSuficiente = false;
                         }
 
-                        if (dinerosIntroducir < 0.25 && dinerosIntroducir > 0) {
+                        if (dinerosIntroducir < 0.25 && dinerosIntroducir >= 0) {
                             IO.println("Dinero Insuficiente");
                             dineroSuficiente = false;
                         }
@@ -260,6 +261,8 @@ void main(String[] args) throws InterruptedException {
                 } while (!dineroSuficiente);
 
 
+                diaLimite = diaActual;
+
                 switch (diaActual) {
                     case 1, 2, 3, 4, 5 -> {
                         if (horaActual < 9) {
@@ -300,7 +303,6 @@ void main(String[] args) throws InterruptedException {
                             horaLimite = horaActual + horasAniadir;
                             minutoLimite = minutosActual + minutosAniadir;
                             segundosLimite = segundosActual + segundosAniadir;
-
                         } else if (horaActual < 21) {
                             segundosLimite = segundosActual + segundosAniadir;
                             minutoLimite = minutosActual + minutosAniadir;
@@ -318,14 +320,14 @@ void main(String[] args) throws InterruptedException {
                             if (horaLimite > 21 || (horaLimite == 21 && (minutoLimite > 0 || segundosLimite > 0))) {
                                 int excesoHoras = horaLimite - 21;
                                 horaLimite = 9 + excesoHoras;
-                                diaActual++; // Pasa al día siguiente
+                                diaLimite = diaActual + 1; // Pasa al día siguiente
                             }
 
                         } else {
                             horaActual = 9;
                             minutosActual = 0;
                             segundosActual = 0;
-                            diaActual++;
+                            diaLimite = diaActual + 1;
 
                             horaLimite = horaActual + horasAniadir;
                             minutoLimite = minutosActual + minutosAniadir;
@@ -361,14 +363,14 @@ void main(String[] args) throws InterruptedException {
                             if (horaLimite > 14 || (horaLimite == 14 && (minutoLimite > 0 || segundosLimite > 0))) {
                                 int excesoHoras = horaLimite - 14;
                                 horaLimite = 9 + excesoHoras;
-                                diaActual = 1;
+                                diaLimite = 1;
                             }
 
                         } else {
                             horaActual = 9;
                             minutosActual = 0;
                             segundosActual = 0;
-                            diaActual = 1;
+                            diaLimite = 1;
 
                             horaLimite = horaActual + horasAniadir;
                             minutoLimite = minutosActual + minutosAniadir;
@@ -380,13 +382,35 @@ void main(String[] args) throws InterruptedException {
                         horaActual = 9;
                         minutosActual = 0;
                         segundosActual = 0;
-                        diaActual = 1;
+                        diaLimite = 1;
 
                         horaLimite = horaActual + horasAniadir;
                         minutoLimite = minutosActual + minutosAniadir;
                         segundosLimite = segundosActual + segundosAniadir;
                     }
                 }
+
+                diaSemanaActual = switch (diaActual) {
+                    case 1 -> "Lunes";
+                    case 2 -> "Martes";
+                    case 3 -> "Miercoles";
+                    case 4 -> "Jueves";
+                    case 5 -> "Viernes";
+                    case 6 -> "Sabado";
+                    case 7 -> "Domingo";
+                    default -> "Dia no valido";
+                };
+
+                diaSemanaLimite = switch (diaLimite) {
+                    case 1 -> "Lunes";
+                    case 2 -> "Martes";
+                    case 3 -> "Miercoles";
+                    case 4 -> "Jueves";
+                    case 5 -> "Viernes";
+                    case 6 -> "Sabado";
+                    case 7 -> "Domingo";
+                    default -> "Dia no valido";
+                };
 
 
                 //Generamos el ticket multiplicando por un identificador que vale 4096
@@ -395,25 +419,35 @@ void main(String[] args) throws InterruptedException {
 
                 codigoTicket = "MAR" + (dinerosCentimos * IDENTIFICADOR);
 
+                fechaInicio = LocalDateTime.now();
+
                 contadorTicket++;
                 dineroAcumuladoTicket += dinerosIntroducir;
                 IO.println("""
                         +-----------------------------------+
-                        |            ZONA AZUL              |
-                        |     TICKET DE APARCAMIENTO        |
+                        |       AYUNTAMIENTO DE MARTOS      |
+                        |           Martos (Jaen)           |
+                        |         ZONA AZUL - TICKET        |
                         +-----------------------------------+
-                        | Código:    %-22s |
-                        | Cliente:   %-22s |
+                        | Ticket:    %-22s |
                         | Nombre:    %-22s |
-                        | Importe:   %-6.2f €                |
+                        | Importe:   %-22s |
                         | Tiempo:    %-22s |
-                        | Fecha:      %d %d %d |
-                        | Fecha límite: %d %d %d |
                         +-----------------------------------+
-                        |    ¡Gracias por su visita!        |
+                        | COMPRA                            |
+                        | Fecha:     %-22s |
+                        | Hora:      %-22s |
                         +-----------------------------------+
-                        """.formatted(codigoTicket, residente, nombrePersonaTicket, dinerosIntroducir,
-                        tiempo_salida, horaActual, minutosActual, segundosActual, horaLimite, minutoLimite, segundosLimite));
+                        | FIN DE ESTACIONAMIENTO            |
+                        | Dia:       %-22s |
+                        | Hora:      %-22s |
+                        +-----------------------------------+
+                        |       Gracias por su visita       |
+                        +-----------------------------------+
+                        """.formatted(codigoTicket, nombrePersonaTicket, dinerosIntroducir, tiempo_salida,
+                        fechaInicio.getDayOfWeek() + "/" + fechaInicio.getDayOfMonth() + "/" + fechaInicio.getYear(),
+                        fechaInicio.getHour() + ":" + fechaInicio.getMinute() + ":" + fechaInicio.getSecond(), diaLimite,
+                        horaLimite + ":" + minutoLimite + ":" + segundosLimite));
             }
 
 
