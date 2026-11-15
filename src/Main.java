@@ -9,7 +9,7 @@ void main(String[] args) throws InterruptedException {
 
     String opcionTeclado = "", respuestaOpcion = "", tarifa_ticket = "", tiempo_salida = "", codigoTicket = "",
             nombrePersonaTicket = "", codigoTeclado = "", usuarioAdminTeclado, contraseniaAdminTeclado, residente = "",
-            diaSemanaActual = "", diaSemanaLimite = "";
+            diaSemanaActual = "", diaSemanaLimite = "", horaCompraTexto = "", horaVenceTexto = "";
 
     char residenteTeclado = 0, horaSimulada;
 
@@ -20,7 +20,8 @@ void main(String[] args) throws InterruptedException {
     int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
             horasAniadir = 0, minutosAniadir = 0, segundosAniadir = 0, codigoTecladoEntero, opcionMenuAdmin, horaActual = 0,
             minutosActual = 0, segundosActual = 0, diaActual = 0, horasRestantesHorario = 0, minutosRestantesHorario = 0,
-            segundosRestantesHorario = 0, horaLimite = 0, minutoLimite = 0, segundosLimite = 0, diaLimite = 0;
+            segundosRestantesHorario = 0, horaLimite = 0, minutoLimite = 0, segundosLimite = 0, diaLimite = 0,
+            horaCompra = 0, minutosCompra = 0, segundosCompra = 0;
 
     //TODO: HAY QUE HACER LO DE LAS HORAS
     //TODO: HAY QUE IMPLEMENTER TICKET CON NUMERO DE REFERENCE EN EL CASE 2
@@ -263,6 +264,10 @@ void main(String[] args) throws InterruptedException {
 
                 diaLimite = diaActual;
 
+                horaCompra = horaActual;
+                minutosCompra = minutosActual;
+                segundosCompra = segundosActual;
+
                 switch (diaActual) {
                     case 1, 2, 3, 4, 5 -> {
                         if (horaActual < 9) {
@@ -419,7 +424,8 @@ void main(String[] args) throws InterruptedException {
 
                 codigoTicket = "MAR" + (dinerosCentimos * IDENTIFICADOR);
 
-                fechaInicio = LocalDateTime.now();
+                horaCompraTexto = "%02d:%02d:%02d".formatted(horaCompra, minutosCompra, segundosCompra);
+                horaVenceTexto = "%02d:%02d:%02d".formatted(horaLimite, minutoLimite, segundosLimite);
 
                 contadorTicket++;
                 dineroAcumuladoTicket += dinerosIntroducir;
@@ -431,7 +437,7 @@ void main(String[] args) throws InterruptedException {
                         +-----------------------------------+
                         | Ticket:    %-22s |
                         | Nombre:    %-22s |
-                        | Importe:   %-22s |
+                        | Importe €: %-22.2f |
                         | Tiempo:    %-22s |
                         +-----------------------------------+
                         | COMPRA                            |
@@ -445,9 +451,7 @@ void main(String[] args) throws InterruptedException {
                         |       Gracias por su visita       |
                         +-----------------------------------+
                         """.formatted(codigoTicket, nombrePersonaTicket, dinerosIntroducir, tiempo_salida,
-                        fechaInicio.getDayOfWeek() + "/" + fechaInicio.getDayOfMonth() + "/" + fechaInicio.getYear(),
-                        fechaInicio.getHour() + ":" + fechaInicio.getMinute() + ":" + fechaInicio.getSecond(), diaLimite,
-                        horaLimite + ":" + minutoLimite + ":" + segundosLimite));
+                        diaSemanaActual, horaCompraTexto, diaSemanaLimite, horaVenceTexto));
             }
 
 
@@ -653,7 +657,7 @@ void main(String[] args) throws InterruptedException {
         }
 
 
-        if (ejecutar == true) {
+        if (ejecutar) {
             IO.println("\nPresione ENTER para volver a empezar...");
             IO.readln();
         }
