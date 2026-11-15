@@ -1,5 +1,4 @@
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 void main(String[] args) throws InterruptedException {
     LocalDateTime fechaInicio;
@@ -18,14 +17,12 @@ void main(String[] args) throws InterruptedException {
 
     boolean ejecutar = true, dineroSuficiente = true, comprobacionTicketTeclado = true, menuAdmin = true, multaPagada = false;
 
-    int dinerosCentimos = 0, contadorTicket = 0, intentosIntroducirCodigo, numMultas = 0, codigoRevertido,
+    int dinerosCentimos = 0, contadorTicket = 0, intentosAdmin = 0, numMultas = 0,
             horasAniadir = 0, minutosAniadir = 0, segundosAniadir = 0, codigoTecladoEntero, opcionMenuAdmin, horaActual = 0,
-            minutosActual = 0, segundosActual = 0, diaActual = 0, horasRestantesHorario = 0, minutosRestantesHorario = 0,
-            segundosRestantesHorario = 0, horaLimite = 0, minutoLimite = 0, segundosLimite = 0, diaLimite = 0,
+            minutosActual = 0, segundosActual = 0, diaActual = 0,
+            horaLimite = 0, minutoLimite = 0, segundosLimite = 0, diaLimite = 0,
             horaCompra = 0, minutosCompra = 0, segundosCompra = 0;
 
-    //TODO: HAY QUE HACER LO DE LAS HORAS
-    //TODO: HAY QUE IMPLEMENTER TICKET CON NUMERO DE REFERENCE EN EL CASE 2
     do {
 
         IO.println("""
@@ -125,7 +122,6 @@ void main(String[] args) throws InterruptedException {
                         minutosActual = fechaInicio.getMinute();
                         segundosActual = fechaInicio.getSecond();
                         diaActual = fechaInicio.getDayOfWeek().getValue();
-                        IO.println(diaActual);
                     }
                 } while (horaSimulada != 'S' && horaSimulada != 'N');
 
@@ -595,6 +591,7 @@ void main(String[] args) throws InterruptedException {
 
 
             case "4" -> {
+                intentosAdmin = 0;
                 IO.println("Proceso para entrar en el menu administrador\n" +
                         "-----------------------------------");
                 do {
@@ -604,77 +601,85 @@ void main(String[] args) throws InterruptedException {
                     contraseniaAdminTeclado = IO.readln("contrasenia: ");
 
                     if (!usuarioAdminTeclado.equals(usuario) || !contraseniaAdminTeclado.equals(contrasenia)) {
-                        IO.println("Usuario o contrasenia incorrecto");
+                        intentosAdmin++;
+                        IO.println("Usuario o contrasenia incorrecto (intento " + intentosAdmin + " de 3)");
                     }
-                } while (!usuarioAdminTeclado.equals(usuario) || !contraseniaAdminTeclado.equals(contrasenia));
+                } while ((!usuarioAdminTeclado.equals(usuario) || !contraseniaAdminTeclado.equals(contrasenia)) && intentosAdmin < 3);
 
-                do {
-                    IO.println("""
-                            
-                            1. Dinero ingresado en tickets y tickets generados
-                            2. Dinero ingresado por multas y multas anuladas
-                            3. Apagar el software
-                            4. Volver al menu principal
-                            
-                            """);
+                if (usuarioAdminTeclado.equals(usuario) && contraseniaAdminTeclado.equals(contrasenia)) {
+                    menuAdmin = true;
 
                     do {
+                        IO.println("""
+                                
+                                1. Dinero ingresado en tickets y tickets generados
+                                2. Dinero ingresado por multas y multas anuladas
+                                3. Apagar el software
+                                4. Volver al menu principal
+                                
+                                """);
 
-                        opcionMenuAdmin = Integer.parseInt(IO.readln("Elige una opcion (1-4): "));
+                        do {
 
-                        if (opcionMenuAdmin > 4 || opcionMenuAdmin < 1) {
-                            IO.println("Opcion inexistente");
+                            opcionMenuAdmin = Integer.parseInt(IO.readln("Elige una opcion (1-4): "));
+
+                            if (opcionMenuAdmin > 4 || opcionMenuAdmin < 1) {
+                                IO.println("Opcion inexistente");
+                            }
+
+                        } while (opcionMenuAdmin > 4 || opcionMenuAdmin < 1);
+
+                        switch (opcionMenuAdmin) {
+                            case 1: {
+                                IO.println("""
+                                        ╔══════════════════════════════════════════════╗
+                                        ║           📊 PANEL DE ADMIN - TICKETS        ║
+                                        ╠══════════════════════════════════════════════╣
+                                        ║  ¡Buenas, Admin!                             ║
+                                        ║                                              ║
+                                        ║  • Tickets generados:   %10d           ║
+                                        ║  • Total recaudado:     %10.2f €         ║
+                                        ╚══════════════════════════════════════════════╝
+                                        """.formatted(contadorTicket, dineroAcumuladoTicket));
+                                break;
+                            }
+                            case 2: {
+                                IO.println("""
+                                        ╔══════════════════════════════════════════════╗
+                                        ║           🚨 PANEL DE ADMIN - MULTAS         ║
+                                        ╠══════════════════════════════════════════════╣
+                                        ║  ¡Buenas, Admin!                             ║
+                                        ║                                              ║
+                                        ║  • Multas generadas:    %10d           ║
+                                        ║  • Total recaudado:     %10.2f €         ║
+                                        ╚══════════════════════════════════════════════╝
+                                        """.formatted(numMultas, dineroAcumulativoMultas));
+                                break;
+                            }
+                            case 3: {
+                                IO.println("Saliendo del sistema ...");
+                                Thread.sleep(1000);
+                                ejecutar = false;
+                                menuAdmin = false;
+                                break;
+                            }
+                            case 4: {
+                                IO.println("\nVolviendo al menu ...");
+                                Thread.sleep(1000);
+                                menuAdmin = false;
+
+                                break;
+                            }
+                            default: {
+                                IO.println("Esa opcion no existe");
+                            }
                         }
 
-                    } while (opcionMenuAdmin > 4 || opcionMenuAdmin < 1);
+                    } while (menuAdmin);
 
-                    switch (opcionMenuAdmin) {
-                        case 1: {
-                            IO.println("""
-                                    ╔══════════════════════════════════════════════╗
-                                    ║           📊 PANEL DE ADMIN - TICKETS        ║
-                                    ╠══════════════════════════════════════════════╣
-                                    ║  ¡Buenas, Admin!                             ║
-                                    ║                                              ║
-                                    ║  • Tickets generados:   %10d           ║
-                                    ║  • Total recaudado:     %10.2f €         ║
-                                    ╚══════════════════════════════════════════════╝
-                                    """.formatted(contadorTicket, dineroAcumuladoTicket));
-                            break;
-                        }
-                        case 2: {
-                            IO.println("""
-                                    ╔══════════════════════════════════════════════╗
-                                    ║           🚨 PANEL DE ADMIN - MULTAS         ║
-                                    ╠══════════════════════════════════════════════╣
-                                    ║  ¡Buenas, Admin!                             ║
-                                    ║                                              ║
-                                    ║  • Multas generadas:    %10d           ║
-                                    ║  • Total recaudado:     %10.2f €         ║
-                                    ╚══════════════════════════════════════════════╝
-                                    """.formatted(numMultas, dineroAcumulativoMultas));
-                            break;
-                        }
-                        case 3: {
-                            IO.println("Saliendo del sistema ...");
-                            Thread.sleep(1000);
-                            ejecutar = false;
-                            menuAdmin = false;
-                            break;
-                        }
-                        case 4: {
-                            IO.println("\nVolviendo al menu ...");
-                            Thread.sleep(1000);
-                            menuAdmin = false;
-
-                            break;
-                        }
-                        default: {
-                            IO.println("Esa opcion no existe");
-                        }
-                    }
-
-                } while (menuAdmin);
+                } else {
+                    IO.println("Demasiados intentos. Volviendo al menu principal.");
+                }
 
             }
             default -> {
@@ -682,7 +687,6 @@ void main(String[] args) throws InterruptedException {
                         "----------------------------");
             }
         }
-
 
 
         if (ejecutar) {
